@@ -17,7 +17,7 @@ app.get('/', (req, res) => {
     res.send('Hello World');
 });
 
-const PORT = process.env.PORT || 3000;
+const PORT = 3000;
 mongoose.connect("mongodb+srv://david:david123456@cluster0.rawvp.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0", { useNewUrlParser: true, useUnifiedTopology: true })
     .then(() => {
         console.log('Connected to MongoDB successfully!');
@@ -29,3 +29,4 @@ mongoose.connect("mongodb+srv://david:david123456@cluster0.rawvp.mongodb.net/?re
         console.error('Failed to connect to MongoDB:', err);
         process.exit(1);
     });
+//

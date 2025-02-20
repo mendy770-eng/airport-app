@@ -6,7 +6,7 @@ const flightSchema = new mongoose.Schema({
         required: true,
         unique: true
     },
-    departure: {
+    source: {
         type: String,
         required: true
     },

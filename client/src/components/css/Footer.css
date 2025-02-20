@@ -1,0 +1,30 @@
+.footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: lightblue;
+    color: var(--neutral-content);
+    height: 4rem;
+    padding: 0 2rem;
+}
+
+.footer aside {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.footer nav {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+}
+
+.footer svg {
+    cursor: pointer;
+    transition: opacity 0.2s ease;
+}
+
+.footer svg:hover {
+    opacity: 0.8;
+}

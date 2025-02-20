@@ -1,15 +1,21 @@
 import { Box } from '@mui/material';
 import UpperBar from '../components/UpperBar';
 import './css/Home.css';
-import BottomBar from '../components/BottomBar';
+import Footer from '../components/Footer';
 import Map from '../components/Map';
 
 
 const HomePage = () => {
     return <Box>
-        <UpperBar />
-        <Map />
-        <BottomBar />
+        <header>
+            <UpperBar />
+        </header>
+        <main>
+            <Map />
+        </main>
+        <footer>
+            <Footer />
+        </footer>
     </Box>
 }
 
