@@ -1,0 +1,22 @@
+.manager-container {
+    padding: 20px;
+    min-width: 300px;
+    min-height: 200px;
+}
+
+.manager-button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+}
+
+.manager-icon {
+    width: 40px;
+    height: 40px;
+    transition: transform 0.3s ease;
+}
+
+.manager-icon.active {
+    transform: scale(1.1);
+}

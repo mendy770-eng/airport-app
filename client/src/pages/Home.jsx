@@ -1,22 +1,18 @@
-import { Box } from '@mui/material';
 import UpperBar from '../components/UpperBar';
 import './css/Home.css';
 import Footer from '../components/Footer';
 import Map from '../components/Map';
 
-
-const HomePage = () => {
-    return <Box>
-        <header>
+const Home = () => {
+    return (
+        <div className="home-container">
             <UpperBar />
-        </header>
-        <main>
-            <Map />
-        </main>
-        <footer>
+            <main className="main-content">
+                <Map />
+            </main>
             <Footer />
-        </footer>
-    </Box>
+        </div>
+    );
 }
 
-export default HomePage;
+export default Home;

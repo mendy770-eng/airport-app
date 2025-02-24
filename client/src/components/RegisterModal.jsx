@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Modal, Box, Typography, Stack, TextField, Button } from '@mui/material';
+import { Modal, Box, Typography, Stack, TextField, Button, MenuItem } from '@mui/material';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
@@ -8,7 +8,7 @@ import { useContext } from 'react';
 import { UserContext } from './UserContext';
 
 
-const userKeys = ['firstName', 'lastName', 'email', 'birthday', 'password'];
+const userKeys = ['firstName', 'lastName', 'email', 'birthday', 'password', 'permission'];
 export default function RegisterModal(props) {
     const [userInfo, setUserInfo] = useState({});
     const [errors, setErrors] = useState({});
@@ -43,7 +43,7 @@ export default function RegisterModal(props) {
     }
 
     const onRegisterClick = () => {
-        if(Loading){
+        if (Loading) {
             return;
         }
         setServerError();
@@ -57,7 +57,7 @@ export default function RegisterModal(props) {
         for (let key of userKeys)
             user[key] = userInfo[key]
         register(user)
-            .then(({data, token}) => {
+            .then(({ data, token }) => {
                 logUser(data, token);
                 props.onClose();
             })
@@ -116,8 +116,8 @@ export default function RegisterModal(props) {
                     value={userInfo.email || ''}
                     onChange={handleChange}
                     error={!!errors.email}
-                    helperText={errors.email} 
-                    disabled={Loading}/>
+                    helperText={errors.email}
+                    disabled={Loading} />
                 <BirthdayPicker
                     value={userInfo.birthday || null}
                     onChange={handleChange}
@@ -143,9 +143,26 @@ export default function RegisterModal(props) {
                     value={userInfo.confirmPassword || ''}
                     onChange={handleChange}
                     error={!!errors.confirmPassword}
-                    helperText={errors.confirmPassword} 
-                    disabled={Loading}/>
-
+                    helperText={errors.confirmPassword}
+                    disabled={Loading} />
+                <TextField
+                    select
+                    required
+                    name="permission"
+                    variant="outlined"
+                    label="Permission"
+                    size='small'
+                    value={userInfo.permission || ''}
+                    onChange={handleChange}
+                    error={!!errors.permission}
+                    helperText={errors.permission}
+                    disabled={Loading}
+                >
+                    <MenuItem value="manager">Manager</MenuItem>
+                    <MenuItem value="airport_inspector">Airport Inspector</MenuItem>
+                    <MenuItem value="technician">Technician</MenuItem>
+                    <MenuItem value="ground_attendant">Ground Attendant</MenuItem>
+                </TextField>
                 <Button variant="contained" size='small' onClick={onRegisterClick} disabled={Loading}>Register</Button>
                 {serverError && <Typography color='error' variant='h6' >{serverError}</Typography>}
             </Stack>

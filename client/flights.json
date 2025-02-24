@@ -1,0 +1,102 @@
+{
+    "flights": [
+        {
+            "flightNumber": "DA654",
+            "departure": "2024-01-01 10:00",
+            "arrival": "2024-01-01 12:00",
+            "source": "JFK",
+            "destination": "VIE"
+        },
+        {
+            "flightNumber": "LS698",
+            "departure": "2024-01-01 11:00",
+            "arrival": "2024-01-01 13:00",
+            "source": "JFK",
+            "destination": "MUC"
+        },
+        {
+            "flightNumber": "AL879",
+            "departure": "2024-01-01 12:00",
+            "arrival": "2024-01-01 14:00",
+            "source": "TLV",
+            "destination": "JFK"
+        },
+        {
+            "flightNumber": "MN623",
+            "departure": "2024-01-01 13:00",
+            "arrival": "2024-01-01 15:00",
+            "source": "FCO",
+            "destination": "JFK"
+        },
+        {
+            "flightNumber": "PU789",
+            "departure": "2024-01-01 14:00",
+            "arrival": "2024-01-01 16:00",
+            "source": "JFK",
+            "destination": "ZRH"
+        },
+        {
+            "flightNumber": "KJ963",
+            "departure": "2024-01-01 15:00",
+            "arrival": "2024-01-01 17:00",
+            "source": "MAD",
+            "destination": "JFK"
+        },
+        {
+            "flightNumber": "ZX234",
+            "departure": "2024-01-01 16:00",
+            "arrival": "2024-01-01 18:00",
+            "source": "AMS",
+            "destination": "JFK"
+        },
+        {
+            "flightNumber": "TR856",
+            "departure": "2024-01-01 17:00",
+            "arrival": "2024-01-01 19:00",
+            "source": "JFK",
+            "destination": "CDG"
+        },
+        {
+            "flightNumber": "QW456",
+            "departure": "2024-01-01 18:00",
+            "arrival": "2024-01-01 20:00",
+            "source": "JFK",
+            "destination": "RDU"
+        },
+        {
+            "flightNumber": "PT683",
+            "departure": "2024-01-01 19:00",
+            "arrival": "2024-01-01 21:00",
+            "source": "JFK",
+            "destination": "BWI"
+        },
+        {
+            "flightNumber": "DA654",
+            "departure": "2024-01-01 10:00",
+            "arrival": "2024-01-01 12:00",
+            "source": "JFK",
+            "destination": "VIE"
+        },
+        {   
+            "flightNumber": "LS698",
+            "departure": "2024-01-01 11:00",
+            "arrival": "2024-01-01 13:00",
+            "source": "JFK",
+            "destination": "MUC"
+        },
+        {
+            "flightNumber": "AL879",
+            "departure": "2024-01-01 12:00",
+            "arrival": "2024-01-01 14:00",
+            "source": "TLV",
+            "destination": "JFK"
+        },
+        {
+            "flightNumber": "MN623",
+            "departure": "2024-01-01 13:00",
+            "arrival": "2024-01-01 15:00",
+            "source": "FCO",
+            "destination": "JFK"
+        }
+    ]
+}
