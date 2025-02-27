@@ -1,9 +1,13 @@
+:root {
+    --primary-color: #1976d2;
+}
+
 .footer {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background-color: lightblue;
-    color: var(--neutral-content);
+    background-color: var(--primary-color);
+    color: white;
     height: 4rem;
     padding: 0 2rem;
 }

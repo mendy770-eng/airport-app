@@ -6,21 +6,28 @@ import control_tower from "../assets/images/control tower.jpg"
 import managerOffice from "../assets/images/managerOffice.png"
 import ground_attendat from "../assets/images/ground attendant.png"
 import technician from "../assets/images/hangers.png"
-import AirportInspector from '../dashboard/AirportInspector';
-import CloseIcon from '@mui/icons-material/Close';
 import MapModal from './MapModal';
 
 // העברנו את הפונקציה מחוץ לקומפוננטה
 const createCustomIcon = (iconUrl) => {
-  return L.icon({
-    iconUrl,
-    iconSize: [40, 40],
-    iconAnchor: [20, 40],
-    popupAnchor: [0, -40]
+  const iconSize = 40;
+  
+  const iconHtml = `
+    <div class="custom-marker">
+      <img src="${iconUrl}" 
+           style="width: 80%; height: 80%; object-fit: contain;"
+      />
+    </div>`;
+
+  return L.divIcon({
+    html: iconHtml,
+    className: 'custom-div-icon',
+    iconSize: [iconSize, iconSize],
+    iconAnchor: [iconSize/2, iconSize/2],
+    popupAnchor: [0, -iconSize/2]
   });
 };
 
-// הגדרת המיקומים הראשוניים מחוץ לקומפוננטה
 const initialMarkers = [
   {
     position: [40.642289, -73.781261],
@@ -48,43 +55,90 @@ const initialMarkers = [
   }
 ];
 
+const saveMarkerPosition = async (title, position) => {
+  try {
+    const response = await fetch('/api/markers/position', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ 
+        title,
+        position: {
+          lat: position[0],
+          lng: position[1]
+        }
+      }),
+    });
+    if (!response.ok) throw new Error('Failed to save marker position');
+    console.log('Marker position saved successfully');
+  } catch (error) {
+    console.error('Error saving marker position:', error);
+  }
+};
+
 const Map = () => {
   const mapContainerRef = useRef(null);
   const mapRef = useRef(null);
   const [activeMarker, setActiveMarker] = useState(null);
-  const [center, setCenter] = useState([40.6413, -73.7781]); // JFK Airport
   const [markersPositions, setMarkersPositions] = useState(initialMarkers);
-
-
+  
   useEffect(() => {
-    if (mapContainerRef.current && !mapRef.current) {
-      mapRef.current = L.map(mapContainerRef.current, {
-        center,
+    const initMap = () => {
+      if (!mapContainerRef.current || mapRef.current) return;
+
+      const map = L.map(mapContainerRef.current, {
+        center: [
+          (40.668464 + 40.629587) / 2, // ממוצע של קווי הרוחב
+          (-73.724442 + -73.856277) / 2 // ממוצע של קווי האורך
+        ],
         zoom: 14,
         minZoom: 14,
         maxZoom: 18,
+        dragging: true,
+        scrollWheelZoom: true
       });
+
+      // הגדרת הגבולות הרצויים
+      const bounds = L.latLngBounds(
+        [40.629587, -73.856277], // southWest
+        [40.668464, -73.724442]  // northEast
+      );
+
+      // התאמת המפה לגבולות
+      map.fitBounds(bounds);
 
       L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
-      }).addTo(mapRef.current);
+      }).addTo(map);
 
-      // הוספת מאזין לחיצה על המפה
-      mapRef.current.on('click', (e) => {
-        console.log('Clicked on map at:', {
-          lat: e.latlng.lat.toFixed(6),
-          lng: e.latlng.lng.toFixed(6)
+      map.on('dragend', () => {
+        const bounds = map.getBounds();
+        console.log('Current map bounds:', {
+          southWest: {
+            lat: bounds.getSouthWest().lat.toFixed(6),
+            lng: bounds.getSouthWest().lng.toFixed(6)
+          },
+          northEast: {
+            lat: bounds.getNorthEast().lat.toFixed(6),
+            lng: bounds.getNorthEast().lng.toFixed(6)
+          }
         });
       });
 
-      mapRef.current.on('moveend', () => {
-        const newCenter = mapRef.current.getCenter();
-        setCenter([newCenter.lat, newCenter.lng]);
-      });
-    }
+      mapRef.current = map;
+    };
+
+    initMap();
+
+    return () => {
+      if (mapRef.current) {
+        mapRef.current.remove();
+        mapRef.current = null;
+      }
+    };
   }, []);
 
-  // הוספת הסמנים למפה
   useEffect(() => {
     if (mapRef.current) {
       mapRef.current.eachLayer((layer) => {
@@ -99,33 +153,32 @@ const Map = () => {
           draggable: true
         })
           .bindPopup(location.hebrewTitle, {
-            autoClose: true,     // הפופאפ ייסגר כשהעכבר יוצא
-            closeOnClick: true,  // הפופאפ ייסגר בלחיצה
-            closeButton: false,  // הסתרת כפתור הסגירה
+            autoClose: true,
+            closeOnClick: true,
+            closeButton: false,
           })
           .addTo(mapRef.current);
 
-        // הצגת הפופאפ כשהעכבר מעל הסמן
         marker.on('mouseover', function() {
           this.openPopup();
         });
 
-        // הסתרת הפופאפ כשהעכבר יוצא מהסמן
         marker.on('mouseout', function() {
           this.closePopup();
         });
 
         marker.on('dragend', (event) => {
           const position = event.target.getLatLng();
-          console.log(`${location.title} dragged to:`, {
-            lat: position.lat.toFixed(6),
-            lng: position.lng.toFixed(6)
-          });
+          const newPosition = [position.lat, position.lng];
+          
           setMarkersPositions(prev => prev.map(loc =>
             loc.title === location.title
-              ? { ...loc, position: [position.lat, position.lng] }
+              ? { ...loc, position: newPosition }
               : loc
           ));
+
+          // שמירת המיקום החדש בשרת
+          saveMarkerPosition(location.title, newPosition);
         });
 
         marker.on('click', () => {
@@ -135,20 +188,43 @@ const Map = () => {
     }
   }, [markersPositions]);
 
-  return <div className="main-content">
-    <div className="map-wrapper">
-      <div
-        ref={mapContainerRef}
-        className="map-container"
-      />
-      {activeMarker && (
-        <MapModal 
-          type={activeMarker} 
-          onClose={() => setActiveMarker(null)} 
-        />
-      )}
+  useEffect(() => {
+    const fetchMarkerPositions = async () => {
+      try {
+        const response = await fetch('/api/markers/positions');
+        if (!response.ok) throw new Error('Failed to fetch marker positions');
+        const positions = await response.json();
+        
+        // עדכון המיקומים רק אם יש מידע בשרת
+        if (positions.length > 0) {
+          setMarkersPositions(prev => prev.map(marker => {
+            const savedPosition = positions.find(p => p.title === marker.title);
+            return savedPosition 
+              ? { ...marker, position: savedPosition.position }
+              : marker;
+          }));
+        }
+      } catch (error) {
+        console.error('Error fetching marker positions:', error);
+      }
+    };
+
+    fetchMarkerPositions();
+  }, []);
+
+  return (
+    <div className="main-content">
+      <div className="map-wrapper">
+        <div ref={mapContainerRef} className="map-container" />
+        {activeMarker && (
+          <MapModal 
+            type={activeMarker} 
+            onClose={() => setActiveMarker(null)} 
+          />
+        )}
+      </div>
     </div>
-  </div>
+  );
 };
 
 export default Map;

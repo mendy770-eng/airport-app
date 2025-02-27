@@ -1,35 +1,26 @@
-import { useState, useContext } from 'react';
+import { useContext, useState } from 'react';
+import { UserContext } from './UserContext';
 import AppBar from '@mui/material/AppBar';
-import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
 import IconButton from '@mui/material/IconButton';
-import Typography from '@mui/material/Typography';
-import Menu from '@mui/material/Menu';
-import MenuIcon from '@mui/icons-material/Menu';
-import Container from '@mui/material/Container';
 import Avatar from '@mui/material/Avatar';
-import Button from '@mui/material/Button';
 import Tooltip from '@mui/material/Tooltip';
-import MenuItem from '@mui/material/MenuItem';
-import AdbIcon from '@mui/icons-material/Adb';
 import Popover from '@mui/material/Popover';
+import Typography from '@mui/material/Typography';
+import CloseIcon from '@mui/icons-material/Close';
 import LogIn from './LogIn';
 import RegisterModal from './RegisterModal';
 import UserCard from './UserCard';
-import { UserContext } from './UserContext.jsx';
-
-const pages = ['Products', 'Pricing', 'Blog'];
+import airportLogo from '../assets/images/airportIconEdited.ico';
+import weatherIcon from '../assets/images/weatherIcon.png';
+import './css/upperBar.css';
 
 function ResponsiveAppBar() {
-    const [anchorElNav, setAnchorElNav] = useState(null);
     const [anchorElUser, setAnchorElUser] = useState(null);
     const [showRegisterModal, setShowRegisterModal] = useState(false);
+    const [showWeatherModal, setShowWeatherModal] = useState(false);
     const { user } = useContext(UserContext);
 
-
-    const handleOpenNavMenu = (event) => {
-        setAnchorElNav(event.currentTarget);
-    };
     const handleOpenUserMenu = (event) => {
         setAnchorElUser(event.currentTarget);
     };
@@ -43,137 +34,90 @@ function ResponsiveAppBar() {
         setShowRegisterModal(false);
     };
 
-    const handleCloseNavMenu = () => {
-        setAnchorElNav(null);
-    };
-
     const handleCloseUserMenu = () => {
         setAnchorElUser(null);
     };
 
+    const handleWeatherClick = () => {
+        setShowWeatherModal(true);
+    };
+
     return (
         <AppBar position="static">
-            <Container maxWidth="xl">
-                <Toolbar disableGutters>
-                    <AdbIcon sx={{ display: { xs: 'none', md: 'flex' }, mr: 1 }} />
-                    <Typography
-                        variant="h6"
-                        noWrap
-                        component="a"
-                        href="#app-bar-with-responsive-menu"
-                        sx={{
-                            mr: 2,
-                            display: { xs: 'none', md: 'flex' },
-                            fontFamily: 'monospace',
-                            fontWeight: 700,
-                            letterSpacing: '.3rem',
-                            color: 'inherit',
-                            textDecoration: 'none',
-                        }}
-                    >
-                        AIRPORT
-                    </Typography>
+            <Toolbar className="app-bar-container">
+                <div className="logo-section">
+                    <Tooltip title="Airport System">
+                        <img 
+                            src={airportLogo} 
+                            alt="Airport Logo" 
+                            className="logo-image"
+                        />
+                    </Tooltip>
+                    <div className="titles-container">
+                        <Typography variant="h6" className="main-title">
+                            AIRPORT SYSTEM
+                        </Typography>
+                        <Typography variant="subtitle2" className="sub-title">
+                            fly beyond limits
+                        </Typography>
+                    </div>
+                </div>
 
-                    <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
-                        <IconButton
-                            size="large"
-                            aria-label="account of current user"
-                            aria-controls="menu-appbar"
-                            aria-haspopup="true"
-                            onClick={handleOpenNavMenu}
-                            color="inherit"
-                        >
-                            <MenuIcon />
+                <div className="weather-section">
+                    <Tooltip title="Weather">
+                        <img 
+                            src={weatherIcon} 
+                            alt="Weather"
+                            className="weather-icon"
+                            onClick={handleWeatherClick}
+                        />
+                    </Tooltip>
+                </div>
+
+                <div className="user-section">
+                    <Tooltip title="Open settings">
+                        <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+                            {user ? <Avatar>{user.firstName[0]}{user.lastName[0]}</Avatar> : <Avatar />}
                         </IconButton>
-                        <Menu
-                            id="menu-appbar"
-                            anchorEl={anchorElNav}
-                            anchorOrigin={{
-                                vertical: 'bottom',
-                                horizontal: 'left',
-                            }}
-                            keepMounted
-                            transformOrigin={{
-                                vertical: 'top',
-                                horizontal: 'left',
-                            }}
-                            open={Boolean(anchorElNav)}
-                            onClose={handleCloseNavMenu}
-                            sx={{ display: { xs: 'block', md: 'none' } }}
-                        >
-                            {/* We should edit Menu items onClick */}
-                            {pages.map((page) => (
-                                <MenuItem key={page} onClick={handleCloseNavMenu}>
-                                    <Typography sx={{ textAlign: 'center' }}>{page}</Typography>
-                                </MenuItem>
-                            ))}
-                        </Menu>
-                    </Box>
-                    <AdbIcon sx={{ display: { xs: 'flex', md: 'none' }, mr: 1 }} />
-                    <Typography
-                        variant="h5"
-                        noWrap
-                        component="a"
-                        href="#app-bar-with-responsive-menu"
-                        sx={{
-                            mr: 2,
-                            display: { xs: 'flex', md: 'none' },
-                            flexGrow: 1,
-                            fontFamily: 'monospace',
-                            fontWeight: 700,
-                            letterSpacing: '.3rem',
-                            color: 'inherit',
-                            textDecoration: 'none',
-                        }}
-                    >
-                        AIRPORT
-                    </Typography>
-                    <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
-                        {/* We should edit Menu items onClick */}
-                        {pages.map((page) => (
-                            <Button
-                                key={page}
-                                onClick={handleCloseNavMenu}
-                                sx={{ my: 2, color: 'white', display: 'block' }}
-                            >
-                                {page}
-                            </Button>
-                        ))}
-                    </Box>
-                    <Box sx={{ flexGrow: 0 }}>
-                        <Tooltip title="Open settings">
-                            <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                               {user ? <Avatar>{user.firstName[0]}{user.lastName[0]}</Avatar> :  <Avatar/>}
-                            </IconButton>
-                        </Tooltip>
+                    </Tooltip>
 
-                        <Popover
-                            open={!!anchorElUser}
-                            onClose={handleCloseUserMenu}
-                            anchorEl={anchorElUser}
-                            anchorOrigin={{
-                                vertical: 'bottom',
-                                horizontal: 'right',
-                            }}
-                            transformOrigin={{
-                                vertical: 'top',
-                                horizontal: 'right',
-                            }}>
-                           {user ? <UserCard closeCard ={handleCloseUserMenu}/> : <LogIn
-                             openRegister={handleOpenRegisterModal} 
-                             closeLogin={handleCloseUserMenu}/>}
-                        </Popover>
-                    </Box>
-                </Toolbar>
-            </Container>
+                    <Popover
+                        open={!!anchorElUser}
+                        onClose={handleCloseUserMenu}
+                        anchorEl={anchorElUser}
+                        anchorOrigin={{
+                            vertical: 'bottom',
+                            horizontal: 'right',
+                        }}
+                        transformOrigin={{
+                            vertical: 'top',
+                            horizontal: 'right',
+                        }}>
+                        {user ? 
+                            <UserCard closeCard={handleCloseUserMenu} /> : 
+                            <LogIn openRegister={handleOpenRegisterModal} closeLogin={handleCloseUserMenu} />
+                        }
+                    </Popover>
+                </div>
+            </Toolbar>
             <RegisterModal open={showRegisterModal} onClose={handleCloseRegisterModal} />
+            
+            {showWeatherModal && (
+                <div className="weather-modal-overlay">
+                    <div className="weather-modal">
+                        <IconButton 
+                            className="close-button"
+                            onClick={() => setShowWeatherModal(false)}
+                        >
+                            <CloseIcon />
+                        </IconButton>
+                        <h2>Weather Information</h2>
+                        {/* כאן יהיה תוכן מזג האוויר */}
+                    </div>
+                </div>
+            )}
         </AppBar>
     );
 }
 
-function UpperBar() {
-    return <div>
-        <ResponsiveAppBar />
-    </div>
-}
-export default UpperBar;
+export default ResponsiveAppBar;

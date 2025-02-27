@@ -4,6 +4,7 @@
     background-color: white;
     border-radius: 8px;
     box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    overflow: hidden;
 }
 
 .inner-container {
@@ -18,6 +19,8 @@
     height: 240px;
     overflow-y: auto;
     padding-right: 10px;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
 }
 
 .inspector-button {
@@ -96,7 +99,13 @@
     opacity: 0.6;
 }
 
-.filters {
+.approve-btn:disabled, .hold-btn:disabled {
+    background-color: #cccccc;
+    cursor: not-allowed;
+    opacity: 0.7;
+}
+
+.rightSideFunctions {
     position: static;
     display: flex;
     flex-direction: column;
@@ -131,7 +140,7 @@
 }
 
 .flights-container::-webkit-scrollbar {
-    width: 8px;
+    display: none;
 }
 
 .flights-container::-webkit-scrollbar-track {
@@ -151,4 +160,113 @@
 .inspector-container h2 {
     text-align: center;
     margin-bottom: 20px;
+}
+
+.emergency-button {
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    background-color: #ff0000;
+    color: white;
+    cursor: pointer;
+    transition: all 0.2s;
+    white-space: nowrap;
+    min-width: 150px;
+}
+
+.emergency-button:hover {
+    background-color: #d60000;
+}
+
+.runway-status {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 10px;
+    border: 1px solid black;
+    border-radius: 4px;
+}
+
+.runway-status-item {
+    text-align: center;
+    padding: 5px;
+    border: 1px solid black;
+    border-radius: 4px;
+}
+
+@keyframes blink {
+    0% { opacity: 1; }
+    50% { opacity: 0.5; }
+    100% { opacity: 1; }
+}
+
+.status-busy {
+    background-color: #ff0000;  /* אדום */
+    color: white;
+    font-weight: bold;
+    animation: blink 2s infinite;
+}
+
+.status-free {
+    background-color: #4CAF50;  /* ירוק */
+    color: white;
+    font-weight: bold;
+    animation: blink 2s infinite;  /* הבהוב כל 2 שניות */
+}
+
+.warning-modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.warning-modal {
+    background-color: white;
+    padding: 30px 20px 20px;
+    border-radius: 8px;
+    position: relative;
+    min-width: 300px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.warning-content {
+    text-align: center;
+    font-size: 18px;
+    color: #ff0000;
+    font-weight: bold;
+    margin-top: 0;
+}
+
+.close-button {
+    position: absolute;
+    top: 5px;
+    right: 10px;
+    border: none;
+    background: none;
+    font-size: 20px;
+    cursor: pointer;
+    color: #666;
+    padding: 5px;
+}
+
+.close-button:hover {
+    color: #000;
+}
+
+.hold-status {
+    background-color: #f44336;
+    color: white;
+    padding: 8px 16px;
+    border-radius: 4px;
+    font-weight: bold;
+    text-align: center;
+    width: 100px;
+    animation: blink 1s infinite;
 }
