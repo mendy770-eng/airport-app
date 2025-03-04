@@ -5,7 +5,27 @@ const jwt = require('jsonwebtoken');
 // Create a new user
 async function register(req, res) {
     try {
-        const newUser = new User(req.body);
+        let longitude = 0;
+        let latitude = 0;
+        const { firstName, lastName, birthday, permission, email, password } = req.body;
+        console.log("p is:"+permission)
+        if (permission === "airportInspector") {
+            longitude = 40.64243;
+            latitude = -73.78122;
+        }
+        else if (permission === "manager") {
+            longitude = 40.652398;
+            latitude = -73.800251;
+        }
+        else if (permission === "technician") {
+            longitude = 40.655451;
+            latitude = -73.802397;
+        }
+        else if (permission === "ground_attendant") {
+            longitude = 40.642596;
+            latitude = -73.778963;
+        }
+        const newUser = new User({ firstName, lastName, birthday, permission, email, password, longitude, latitude });
         const savedUser = await newUser.save();
         const token = jwt.sign({ userId: savedUser._id }, process.env.TOKEN_SECRET, { expiresIn: '1h' });
         res.status(201).json({
@@ -70,6 +90,27 @@ async function getUserById(req, res) {
 // Update user
 async function updateUser(req, res) {
     try {
+        const { permission } = req.body;
+        if (permission === "airport inspector") {
+            longitude = 40.64243;
+            latitude = -73.78122;
+
+        }
+        else if (permission === "manager") {
+            longitude = 40.652398;
+            latitude = -73.800251;
+
+        }
+        else if (permission === "technician") {
+            req.body.longitude = 1.2
+            req.body.latitude = 1.2
+
+        }
+        else if (permission === "ground attendant") {
+            req.body.longitude = 1.2
+            req.body.latitude = 1.2
+        }
+
         const user = await User.findByIdAndUpdate(
             req.params.id,
             req.body,
@@ -96,22 +137,13 @@ async function updateUser(req, res) {
 // Delete user
 async function deleteUser(req, res) {
     try {
-        const user = await User.findByIdAndDelete(req.params.id);
-        if (!user) {
-            return res.status(404).json({
-                success: false,
-                message: 'User not found'
-            });
-        }
-        res.status(200).json({
-            success: true,
-            message: 'User deleted successfully'
-        });
+        const userId = req.params.id;
+        await User.findByIdAndDelete(userId);
+        console.log(`User ${userId} was successfully deleted`);
+        res.json({ message: 'User deleted successfully' });
     } catch (error) {
-        res.status(500).json({
-            success: false,
-            message: error.message
-        });
+        console.error('Error deleting user:', error);
+        res.status(500).json({ message: 'Failed to delete user' });
     }
 };
 
@@ -172,6 +204,23 @@ const login = async (req, res) => {
     }
 };
 
+// הוספת פונקציות חדשות
+const getAllUsersPublic = async (req, res) => {
+    try {
+        const users = await User.find();
+        const usersList = users.map(user => ({
+            _id: user._id,
+            fullName: `${user.firstName} ${user.lastName}`,
+            email: user.email,
+            permission: user.permission
+        }));
+        res.json(usersList);
+    } catch (error) {
+        console.error('Error fetching users:', error);
+        res.status(500).json({ message: 'Failed to fetch users' });
+    }
+};
+
 module.exports = {
     register,
     getAllUsers,
@@ -179,5 +228,6 @@ module.exports = {
     updateUser,
     deleteUser,
     getUsersByPermission,
-    login
+    login,
+    getAllUsersPublic
 };

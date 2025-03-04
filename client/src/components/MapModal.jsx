@@ -1,16 +1,20 @@
 import AirportInspector from '../dashboard/AirportInspector';
 import Manager from '../dashboard/Manager';
+import Technician from '../dashboard/Technician.jsx';
+import GroundAttendant from '../dashboard/GroundAttendant.jsx';
 import './css/map.css';
 
 const MapModal = ({ type, onClose }) => {
     const renderContent = () => {
         switch (type) {
-            case 'airport_inspector':
+            case 'airportInspector':
                 return <AirportInspector />;
             case 'manager':
                 return <Manager />;
-            default:
-                return <div>{type} component</div>;
+            case 'technicion':
+                return <Technician />;
+            case 'groundAttendant':
+                return < GroundAttendant/>;
         }
     };
 

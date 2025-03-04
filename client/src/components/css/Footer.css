@@ -10,13 +10,24 @@
     color: white;
     height: 4rem;
     padding: 0 2rem;
+    width: 100%;
+    flex-wrap: wrap;
 }
-
 
 .footer aside {
     display: flex;
     align-items: center;
     gap: 1rem;
+}
+
+.time-container {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: white;
+    font-family: 'Times New Roman', Times, serif;
 }
 
 .footer nav {
@@ -30,6 +41,49 @@
     transition: opacity 0.2s ease;
 }
 
-.footer svg:hover {
-    opacity: 0.8;
+.weather-icon {
+    width: 40px;
+    height: 40px;
+    transition: transform 0.3s ease;
+    margin-right: 60px;
+}
+
+.weather-icon:hover {
+    transform: scale(1.1);
+}
+
+.right-section {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-left: auto;
+    padding-right: 60px;
+}
+
+@media (max-width: 768px) {
+    .footer {
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 1rem;
+    }
+
+    .time-container {
+        font-size: 1.1rem;
+    }
+
+    .right-section {
+        margin-top: 8px;
+        width: 100%;
+        justify-content: flex-end;
+    }
+}
+
+@media (max-width: 480px) {
+    .footer {
+        align-items: center;
+    }
+
+    .right-section {
+        justify-content: center;
+    }
 }

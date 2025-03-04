@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import garbageIcon from '../../assets/images/garbage.png';
 import '../css/manager.css';
+import '../managerModals/css/usersModal.css';
 
 const UsersModal = ({ showModal, setShowModal }) => {
     const [users, setUsers] = useState([]);

@@ -159,9 +159,9 @@ export default function RegisterModal(props) {
                     disabled={Loading}
                 >
                     <MenuItem value="manager">Manager</MenuItem>
-                    <MenuItem value="airport_inspector">Airport Inspector</MenuItem>
+                    <MenuItem value="airportInspector">Airport Inspector</MenuItem>
                     <MenuItem value="technician">Technician</MenuItem>
-                    <MenuItem value="ground_attendant">Ground Attendant</MenuItem>
+                    <MenuItem value="groundAttendant">Ground Attendant</MenuItem>
                 </TextField>
                 <Button variant="contained" size='small' onClick={onRegisterClick} disabled={Loading}>Register</Button>
                 {serverError && <Typography color='error' variant='h6' >{serverError}</Typography>}

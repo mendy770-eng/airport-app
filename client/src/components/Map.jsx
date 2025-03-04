@@ -7,8 +7,7 @@ import managerOffice from "../assets/images/managerOffice.png"
 import ground_attendat from "../assets/images/ground attendant.png"
 import technician from "../assets/images/hangers.png"
 import MapModal from './MapModal';
-
-// העברנו את הפונקציה מחוץ לקומפוננטה
+//
 const createCustomIcon = (iconUrl) => {
   const iconSize = 40;
   
@@ -32,7 +31,7 @@ const initialMarkers = [
   {
     position: [40.642289, -73.781261],
     icon: createCustomIcon(control_tower),
-    title: "airport_inspector",
+    title: "airportInspector",
     hebrewTitle: "מגדל פיקוח"
   },
   {
@@ -77,12 +76,22 @@ const saveMarkerPosition = async (title, position) => {
   }
 };
 
+/**
+ * קומפוננטת המפה הראשית
+ * מציגה מפה אינטראקטיבית עם סמנים הניתנים לגרירה
+ */
 const Map = () => {
-  const mapContainerRef = useRef(null);
-  const mapRef = useRef(null);
-  const [activeMarker, setActiveMarker] = useState(null);
-  const [markersPositions, setMarkersPositions] = useState(initialMarkers);
+  // רפרנסים לשמירת התייחסות לאלמנטים של המפה
+  const mapContainerRef = useRef(null);  // הקונטיינר שמכיל את המפה
+  const mapRef = useRef(null);           // אובייקט המפה של leaflet
   
+  // ניהול state של הקומפוננטה
+  const [activeMarker, setActiveMarker] = useState(null);  // הסמן הנוכחי שנלחץ
+  const [markersPositions, setMarkersPositions] = useState(initialMarkers);  // מיקומי כל הסמנים
+
+  /**
+   * אפקט לאתחול המפה - מתבצע פעם אחת בטעינה
+   */
   useEffect(() => {
     const initMap = () => {
       if (!mapContainerRef.current || mapRef.current) return;
@@ -99,19 +108,20 @@ const Map = () => {
         scrollWheelZoom: true
       });
 
-      // הגדרת הגבולות הרצויים
+      // הגדרת גבולות המפה - מגביל את התנועה לאזור שדה התעופה
       const bounds = L.latLngBounds(
-        [40.629587, -73.856277], // southWest
-        [40.668464, -73.724442]  // northEast
+        [40.629587, -73.856277], // נקודה דרום-מערבית
+        [40.668464, -73.724442]  // נקודה צפון-מזרחית
       );
 
-      // התאמת המפה לגבולות
-      map.fitBounds(bounds);
+      map.fitBounds(bounds);  // התאמת המפה לגבולות שהוגדרו
 
+      // הוספת שכבת המפה הבסיסית מ-OpenStreetMap
       L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
       }).addTo(map);
 
+      // מעקב אחר גרירת המפה - מדפיס את הגבולות הנוכחיים לצורכי פיתוח
       map.on('dragend', () => {
         const bounds = map.getBounds();
         console.log('Current map bounds:', {
@@ -129,8 +139,12 @@ const Map = () => {
       mapRef.current = map;
     };
 
-    initMap();
+    // אתחול המפה רק אם היא לא קיימת
+    if (!mapRef.current) {
+      initMap();
+    }
 
+    // ניקוי בעת הסרת הקומפוננטה
     return () => {
       if (mapRef.current) {
         mapRef.current.remove();
@@ -139,19 +153,27 @@ const Map = () => {
     };
   }, []);
 
+  /**
+   * אפקט לעדכון הסמנים על המפה
+   * מתבצע בכל פעם שמיקומי הסמנים משתנים
+   */
   useEffect(() => {
     if (mapRef.current) {
+      // הסרת כל הסמנים הקיימים לפני הוספת החדשים
       mapRef.current.eachLayer((layer) => {
         if (layer instanceof L.Marker) {
           mapRef.current.removeLayer(layer);
         }
       });
 
+      // הוספת הסמנים החדשים למפה
       markersPositions.forEach(location => {
+        // יצירת סמן חדש עם האייקון המתאים
         const marker = L.marker(location.position, {
           icon: location.icon,
-          draggable: true
+          draggable: true  // Allow dragging for all users
         })
+          // הוספת חלון קופץ עם הכותרת בעברית
           .bindPopup(location.hebrewTitle, {
             autoClose: true,
             closeOnClick: true,
@@ -159,18 +181,22 @@ const Map = () => {
           })
           .addTo(mapRef.current);
 
+        // פתיחת החלון הקופץ בעת מעבר עכבר
         marker.on('mouseover', function() {
           this.openPopup();
         });
 
+        // סגירת החלון הקופץ כשהעכבר יוצא
         marker.on('mouseout', function() {
           this.closePopup();
         });
 
+        // טיפול בסיום גרירת סמן
         marker.on('dragend', (event) => {
           const position = event.target.getLatLng();
           const newPosition = [position.lat, position.lng];
           
+          // עדכון מיקום הסמן ב-state
           setMarkersPositions(prev => prev.map(loc =>
             loc.title === location.title
               ? { ...loc, position: newPosition }
@@ -181,6 +207,7 @@ const Map = () => {
           saveMarkerPosition(location.title, newPosition);
         });
 
+        // טיפול בלחיצה על סמן - פתיחת המודל המתאים
         marker.on('click', () => {
           setActiveMarker(location.title);
         });
@@ -188,6 +215,9 @@ const Map = () => {
     }
   }, [markersPositions]);
 
+  /**
+   * אפקט לטעינת מיקומי הסמנים מהשרת בטעינה הראשונית
+   */
   useEffect(() => {
     const fetchMarkerPositions = async () => {
       try {
@@ -212,10 +242,13 @@ const Map = () => {
     fetchMarkerPositions();
   }, []);
 
+  // רינדור הקומפוננטה
   return (
     <div className="main-content">
       <div className="map-wrapper">
+        {/* מיכל המפה */}
         <div ref={mapContainerRef} className="map-container" />
+        {/* מודל שנפתח בלחיצה על סמן */}
         {activeMarker && (
           <MapModal 
             type={activeMarker} 

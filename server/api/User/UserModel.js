@@ -25,8 +25,8 @@ const userSchema = new mongoose.Schema({
   },
   permission: {
     type: String,
-    enum: ['technicion', 'supervisor', 'admin', 'ground_attendant'],
-    default: 'ground_attendant',
+    enum: ['technician', 'airportInspector', 'manager', 'groundAttendant'],
+    default: 'groundAttendant',
     required: true
   },
   password: {
@@ -38,7 +38,7 @@ const userSchema = new mongoose.Schema({
   timestamps: true
 });
 
-userSchema.pre('save', async function (next){
+userSchema.pre('save', async function (next) {
   console.log("Saving user", this);
   const salt = await bcrypt.genSalt(12);
   const hash = await bcrypt.hash(this.password, salt);

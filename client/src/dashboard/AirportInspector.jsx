@@ -1,18 +1,6 @@
 import { useState, useEffect } from 'react';
 import './css/airportinspector.css';
 import WarningModal from './WarningModal';
-import { useEmergency } from '../utils/useEmergency';
-
-const formatDate = (dateString) => {
-    const date = new Date(dateString);
-    return {
-        date: date.toLocaleDateString('en-GB'), // dd/mm/yyyy format
-        time: date.toLocaleTimeString('en-GB', {
-            hour: '2-digit',
-            minute: '2-digit'
-        }) // hh:mm format
-    };
-};
 
 const AirportInspector = () => {
     const [flights, setFlights] = useState([]);
@@ -23,7 +11,6 @@ const AirportInspector = () => {
     const [runwayStatus, setRunwayStatus] = useState('free');
     const [showWarning, setShowWarning] = useState(false);
     const [disabledFlights, setDisabledFlights] = useState([]);
-    const { declareEmergency } = useEmergency();
 
     const handleApprove = (flightNumber) => {
         if (runwayStatus === 'busy') {
@@ -68,26 +55,30 @@ const AirportInspector = () => {
         setFilteredFlights(flights);
     };
 
-    const handleEmergency = () => {
-        declareEmergency();
+    const formatDateTime = (date) => {
+        return date.toLocaleString('en-GB', {
+            day: '2-digit',
+            month: '2-digit',
+            year: 'numeric',
+            hour: '2-digit',
+            minute: '2-digit',
+            hour12: false
+        });
     };
 
     useEffect(() => {
         const fetchFlights = async () => {
             try {
-                const response = await fetch('/api/flights/live');
-
-                if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
-                }
-
+                setLoading(true);
+                const response = await fetch('/api/flights');  // שימוש ב-endpoint של המונגו
+                if (!response.ok) throw new Error('Failed to fetch flights');
                 const data = await response.json();
                 setFlights(data);
-                setFilteredFlights(data); // Initialize filtered flights with all flights
-                setLoading(false);
-            } catch (err) {
-                console.error('Error fetching flights:', err);
-                setError(err.message);
+                setFilteredFlights(data);
+            } catch (error) {
+                console.error('Error fetching flights:', error);
+                setError(error.message);
+            } finally {
                 setLoading(false);
             }
         };
@@ -101,22 +92,22 @@ const AirportInspector = () => {
 
     return (
         <div className="inspector-container">
-            <h2>flights information</h2>
+            <h2 className="inspector-title">flights information</h2>
             <div className="inner-container">
                 <div className="flights-container">
                     <div className="flights-list">
                         {filteredFlights.map((flight, index) => {
-                            const departureTime = formatDate(flight.departure.time);
-                            const arrivalTime = formatDate(flight.arrival.time);
+                            const departureTime = new Date(flight.departure);
+                            const arrivalTime = new Date(flight.arrival);
 
                             return (
-                                <div key={`${flight.flightNumber}-${index}`} className="flight-item">
+                                <div key={index} className="flight-item">
                                     <div className="flight-info">
-                                        <div>flight number: {flight.flightNumber}</div>
-                                        <div>departure: {departureTime.date} {departureTime.time}</div>
-                                        <div>landing: {arrivalTime.date} {arrivalTime.time}</div>
-                                        <div>source: {flight.departure.airport}</div>
-                                        <div>destination: {flight.arrival.airport}</div>
+                                        <div>Flight Number: {flight.flightNumber}</div>
+                                        <div>From: {flight.source}</div>
+                                        <div>To: {flight.destination}</div>
+                                        <div>Departure: {formatDateTime(departureTime)}</div>
+                                        <div>Arrival: {formatDateTime(arrivalTime)}</div>
                                     </div>
                                     <div className="flight-actions">
                                         {disabledFlights.includes(flight.flightNumber) ? (
@@ -174,7 +165,7 @@ const AirportInspector = () => {
                             Show All Flights
                         </button>
                     )}
-                    <button className="emergency-button" onClick={handleEmergency}>
+                    <button className="emergency-button">
                         Emergency Situation
                     </button>
                 </div>

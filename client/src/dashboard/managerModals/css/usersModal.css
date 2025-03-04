@@ -1,0 +1,15 @@
+.users-modal {
+    max-height: 90vh;
+    overflow-y: auto;
+    min-width: 600px;
+    padding: 20px 40px;
+}
+
+.users-list {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    padding: 10px;
+}
+
+/* ... rest of users modal specific styles ... */

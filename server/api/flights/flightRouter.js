@@ -1,6 +1,17 @@
 const express = require('express');
 const router = express.Router();
-const { createFlight, getAllFlights, getFlightById, updateFlight, deleteFlight } = require('./flightController');
+const path = require('path');
+const fs = require('fs').promises;
+const { 
+    createFlight, 
+    getAllFlights, 
+    getFlightById, 
+    updateFlight, 
+    deleteFlight,
+    getLiveFlights 
+} = require('./flightController');
+// קבלת נתוני טיסות חיות מקובץ
+router.get('/live', getLiveFlights);
 
 // יצירת טיסה
 router.post('/', createFlight);
@@ -9,12 +20,12 @@ router.post('/', createFlight);
 router.get('/', getAllFlights);
 
 // קבלת טיסה לפי מספר טיסה
-router.get('/:id', getFlightById)
+router.get('/:id', getFlightById);
 
 // עדכון טיסה
 router.put('/:id', updateFlight);
 
-// מחיקת טיסה;
+// מחיקת טיסה
 router.delete('/:id', deleteFlight);
 
 module.exports = router;

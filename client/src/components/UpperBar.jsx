@@ -1,4 +1,4 @@
-import { useContext, useState } from 'react';
+import { useContext, useState} from 'react';
 import { UserContext } from './UserContext';
 import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
@@ -7,7 +7,6 @@ import Avatar from '@mui/material/Avatar';
 import Tooltip from '@mui/material/Tooltip';
 import Popover from '@mui/material/Popover';
 import Typography from '@mui/material/Typography';
-import CloseIcon from '@mui/icons-material/Close';
 import LogIn from './LogIn';
 import RegisterModal from './RegisterModal';
 import UserCard from './UserCard';
@@ -18,8 +17,7 @@ import './css/upperBar.css';
 function ResponsiveAppBar() {
     const [anchorElUser, setAnchorElUser] = useState(null);
     const [showRegisterModal, setShowRegisterModal] = useState(false);
-    const [showWeatherModal, setShowWeatherModal] = useState(false);
-    const { user } = useContext(UserContext);
+    const { user } = useContext(UserContext) || {};
 
     const handleOpenUserMenu = (event) => {
         setAnchorElUser(event.currentTarget);
@@ -30,6 +28,7 @@ function ResponsiveAppBar() {
         setShowRegisterModal(true);
     };
 
+
     const handleCloseRegisterModal = () => {
         setShowRegisterModal(false);
     };
@@ -38,18 +37,17 @@ function ResponsiveAppBar() {
         setAnchorElUser(null);
     };
 
-    const handleWeatherClick = () => {
-        setShowWeatherModal(true);
-    };
+
+
 
     return (
         <AppBar position="static">
             <Toolbar className="app-bar-container">
                 <div className="logo-section">
                     <Tooltip title="Airport System">
-                        <img 
-                            src={airportLogo} 
-                            alt="Airport Logo" 
+                        <img
+                            src={airportLogo}
+                            alt="Airport Logo"
                             className="logo-image"
                         />
                     </Tooltip>
@@ -61,17 +59,6 @@ function ResponsiveAppBar() {
                             fly beyond limits
                         </Typography>
                     </div>
-                </div>
-
-                <div className="weather-section">
-                    <Tooltip title="Weather">
-                        <img 
-                            src={weatherIcon} 
-                            alt="Weather"
-                            className="weather-icon"
-                            onClick={handleWeatherClick}
-                        />
-                    </Tooltip>
                 </div>
 
                 <div className="user-section">
@@ -93,29 +80,14 @@ function ResponsiveAppBar() {
                             vertical: 'top',
                             horizontal: 'right',
                         }}>
-                        {user ? 
-                            <UserCard closeCard={handleCloseUserMenu} /> : 
+                        {user ?
+                            <UserCard closeCard={handleCloseUserMenu} /> :
                             <LogIn openRegister={handleOpenRegisterModal} closeLogin={handleCloseUserMenu} />
                         }
                     </Popover>
                 </div>
             </Toolbar>
             <RegisterModal open={showRegisterModal} onClose={handleCloseRegisterModal} />
-            
-            {showWeatherModal && (
-                <div className="weather-modal-overlay">
-                    <div className="weather-modal">
-                        <IconButton 
-                            className="close-button"
-                            onClick={() => setShowWeatherModal(false)}
-                        >
-                            <CloseIcon />
-                        </IconButton>
-                        <h2>Weather Information</h2>
-                        {/* כאן יהיה תוכן מזג האוויר */}
-                    </div>
-                </div>
-            )}
         </AppBar>
     );
 }

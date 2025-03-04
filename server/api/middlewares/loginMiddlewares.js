@@ -27,7 +27,7 @@ async function verifyToken(permission, req, res, next) {
 }
 
 const verifyTechnicion = (req, res, next) => {
-    verifyToken('technicion', req, res, next);
+    verifyToken('technician', req, res, next);
 };
 
 const verifyAdmin = (req, res, next) => {

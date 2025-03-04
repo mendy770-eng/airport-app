@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import '../utils/css/Time.css';
+import '../components/css/Footer.css';
 
 function Clock() {
   let AMPM = false;
@@ -34,8 +34,7 @@ function Clock() {
   return (
     <div className="Clock Box">
       <div className="time-container">
-        <div>{date}</div>
-        <div>{time}</div>
+        {date} {time}
       </div>
     </div>
   );

@@ -8,20 +8,20 @@ import CameraModal from './managerModals/CameraModal';
 import StoreModal from './managerModals/StoreModal';
 import FlightsListModal from './managerModals/FlightsListModal';
 import './css/manager.css';
-import { useEmergency } from '../utils/useEmergency';
 
 const Manager = () => {
     const [showUsersModal, setShowUsersModal] = useState(false);
     const [showCameraModal, setShowCameraModal] = useState(false);
     const [showStoreModal, setShowStoreModal] = useState(false);
     const [showFlightsModal, setShowFlightsModal] = useState(false);
-    const { isEmergency, emergencyTime } = useEmergency();
 
     return (
         <>
             <div className={`manager-container ${!showUsersModal && !showCameraModal && !showStoreModal && !showFlightsModal ? 'visible' : ''}`}>
                 <h2 className="modal-title">MANAGER OFFICE</h2>
+
                 <div className="icons-container">
+
                     <div className="vertical-group">
                         <div className="icon-box" onClick={() => setShowUsersModal(true)}>
                             <div className="icon-wrapper">
@@ -67,21 +67,7 @@ const Manager = () => {
                     </div>
                 </div>
             </div>
-            <div className={`emergency-banner ${isEmergency ? 'emergency' : ''}`}>
-                <h2>
-                    Emergency status: 
-                    <span className={isEmergency ? 'status-emergency' : 'status-free'}>
-                        {isEmergency 
-                            ? `Emergency situation declared by the inspector at ${emergencyTime?.toLocaleTimeString()}` 
-                            : 'all clear'
-                        }
-                    </span>
-                </h2>
-            </div>
-            <UsersModal
-                showModal={showUsersModal}
-                setShowModal={setShowUsersModal}
-            />
+            <UsersModal showModal={showUsersModal} setShowModal={setShowUsersModal} />
             <CameraModal showModal={showCameraModal} setShowModal={setShowCameraModal} />
             <StoreModal showModal={showStoreModal} setShowModal={setShowStoreModal} />
             <FlightsListModal showModal={showFlightsModal} setShowModal={setShowFlightsModal} />

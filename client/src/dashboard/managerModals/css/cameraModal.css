@@ -1,0 +1,36 @@
+.camera-modal {
+    width: 90vw;
+    max-width: 1200px;
+    padding: 20px;
+    transform: scale(1.5);
+}
+
+.video-container {
+    width: 100%;
+    height: calc(100% - 60px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.camera-video {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+.camera-modal-title {
+    text-align: center;
+    margin: 0 0 10px 0;
+    /* הקטנת margin */
+    padding: 10px 0;
+    /* הקטנת padding */
+    font-size: 20px;
+    /* הקטנת גודל פונט */
+    color: #333;
+    text-transform: uppercase;
+    font-weight: bold;
+    width: 100%;
+    background-color: #f5f5f5;
+    border-bottom: 2px solid #ddd;
+
+}

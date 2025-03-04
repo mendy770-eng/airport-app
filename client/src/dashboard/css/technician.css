@@ -1,22 +1,99 @@
-.technicion-container {
-    padding: 20px;
-    min-width: 300px;
-    min-height: 200px;
+.tools-title{
+    text-align: center;
+    margin: 0 0 10px 0;
+    /* הקטנת margin */
+    padding: 10px 0;
+    /* הקטנת padding */
+    font-size: 24px;
+    /* הקטנת גודל פונט */
+    color: #333;
+    text-transform: uppercase;
+    font-weight: bold;
+    width: 100%;
+    background-color: #f5f5f5;
+    border-bottom: 2px solid #ddd;
 }
 
-.technicion-button {
-    background: none;
-    border: none;
-    cursor: pointer;
-    padding: 0;
+.technician-container{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.line{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+}
+.technician-tool-type{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid black;
+    border-radius: 30px;
+    padding: 10px;
+    margin: 10px;
+    height: 180px;
+    width: 150px;
 }
 
-.technicion-icon {
+.tool-image{
+    width: 60px;
+    height: 60px;
+}
+.tool-description{
+    font-size: 16px;
+    text-align: center;
+}
+
+.tool-quantity{
+    font-size: 16px;
+    text-align: center;
+}
+.buttons-container {
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    margin-top: 10px;
+    width: 100%;          /* הוספת רוחב מלא */
+    justify-content: center;  /* מרכוז אופקי */
+    align-items: center;      /* מרכוז אנכי */
+}
+.usage-button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    border: 1px solid black;
+    border-radius: 30px;
+    height: 30px;
     width: 40px;
-    height: 40px;
-    transition: transform 0.3s ease;
+    color: white;
+    flex-shrink: 0;      /* מניעת כיווץ של הכפתורים */
+}
+.usage-button {
+    background-color: red;
+}
+.add-button-technician {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    background-color: green;
+    border-radius: 30px;
+    height: 30px;
+    width: 40px;
+    color: white;
+    flex-shrink: 0;
+    border: 1px solid black;
 }
 
-.technicion-icon.active {
-    transform: scale(1.1);
+.usage-button:hover{
+    transform: scale(1.2);
+    transition: transform 0.2s ease-in-out;  
+}
+.add-button-technician:hover{
+    transform: scale(1.2);
+    transition: transform 0.2s ease-in-out;
 }
