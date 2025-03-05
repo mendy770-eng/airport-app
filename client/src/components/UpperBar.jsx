@@ -11,7 +11,6 @@ import LogIn from './LogIn';
 import RegisterModal from './RegisterModal';
 import UserCard from './UserCard';
 import airportLogo from '../assets/images/airportIconEdited.ico';
-import weatherIcon from '../assets/images/weatherIcon.png';
 import './css/upperBar.css';
 
 function ResponsiveAppBar() {

@@ -30,10 +30,10 @@ const AirportInspector = () => {
             return;
         }
         console.log(`Flight ${flightNumber} held`);
-        
+
         // הוספת הטיסה לרשימת הטיסות המושבתות
         setDisabledFlights(prev => [...prev, flightNumber]);
-        
+
         // הסרת הטיסה מהרשימה אחרי 10 שניות
         setTimeout(() => {
             setDisabledFlights(prev => prev.filter(num => num !== flightNumber));
@@ -42,12 +42,12 @@ const AirportInspector = () => {
 
     const filterArrivals = () => {
         setActiveFilter('arrivals');
-        setFilteredFlights(flights.filter(flight => flight.arrival.airport === 'JFK'));
+        setFilteredFlights(flights.filter(flight => flight.destination === 'JFK'));
     };
 
     const filterDepartures = () => {
         setActiveFilter('departures');
-        setFilteredFlights(flights.filter(flight => flight.departure.airport === 'JFK'));
+        setFilteredFlights(flights.filter(flight => flight.source === 'JFK'));
     };
 
     const showAllFlights = () => {
@@ -90,91 +90,91 @@ const AirportInspector = () => {
     if (error) return <div>{error}</div>;
     if (!filteredFlights.length) return <div>currently no flights available</div>;
 
-    return (
-        <div className="inspector-container">
-            <h2 className="inspector-title">flights information</h2>
-            <div className="inner-container">
-                <div className="flights-container">
-                    <div className="flights-list">
-                        {filteredFlights.map((flight, index) => {
-                            const departureTime = new Date(flight.departure);
-                            const arrivalTime = new Date(flight.arrival);
+    return <div>
+        <h2 className="inspector-title">flights information</h2>
+        <div className='inspector-container'>
+            <div className="flights-list-inspector">
+                {filteredFlights.map((flight, index) => {
+                    const departureTime = new Date(flight.departure);
+                    const arrivalTime = new Date(flight.arrival);
 
-                            return (
-                                <div key={index} className="flight-item">
-                                    <div className="flight-info">
-                                        <div>Flight Number: {flight.flightNumber}</div>
-                                        <div>From: {flight.source}</div>
-                                        <div>To: {flight.destination}</div>
-                                        <div>Departure: {formatDateTime(departureTime)}</div>
-                                        <div>Arrival: {formatDateTime(arrivalTime)}</div>
+                    return (
+                        <div key={index} className="flight-item">
+                            <div className="flight-info">
+                                <div>Flight Number: {flight.flightNumber}</div>
+                                <div>From: {flight.source}</div>
+                                <div>To: {flight.destination}</div>
+                                <div>Departure: {formatDateTime(departureTime)}</div>
+                                <div>Arrival: {formatDateTime(arrivalTime)}</div>
+                            </div>
+                            <div className="flight-actions">
+                                {disabledFlights.includes(flight.flightNumber) ? (
+                                    <div className="hold-status">
+                                        THE FLIGHT IS ON HOLD
                                     </div>
-                                    <div className="flight-actions">
-                                        {disabledFlights.includes(flight.flightNumber) ? (
-                                            <div className="hold-status">
-                                                THE FLIGHT IS ON HOLD
-                                            </div>
-                                        ) : (
-                                            <>
-                                                <button
-                                                    className="approve-btn"
-                                                    onClick={() => handleApprove(flight.flightNumber)}
-                                                >
-                                                    Approve
-                                                </button>
-                                                <button
-                                                    className="hold-btn"
-                                                    onClick={() => handleHold(flight.flightNumber)}
-                                                >
-                                                    Hold
-                                                </button>
-                                            </>
-                                        )}
-                                    </div>
-                                </div>
-                            );
-                        })}
-                    </div>
-                </div>
-                <div className="rightSideFunctions">
-                    <div className="runway-status">
-                        <div className="runway-status-item">
-                            RUNWAY STATUS
+                                ) : (
+                                    <>
+                                        <button
+                                            className="approve-btn"
+                                            onClick={() => handleApprove(flight.flightNumber)}
+                                        >
+                                            Approve
+                                        </button>
+                                        <button
+                                            className="hold-btn"
+                                            onClick={() => handleHold(flight.flightNumber)}
+                                        >
+                                            Hold
+                                        </button>
+                                    </>
+                                )}
+                            </div>
                         </div>
-                        <div className={`runway-status-item ${runwayStatus === 'free' ? 'status-free' : 'status-busy'}`}>
-                            {runwayStatus.toUpperCase()}
-                        </div>
-                    </div>
-                    <button
-                        className={`filter-btn ${activeFilter === 'arrivals' ? 'active' : ''}`}
-                        onClick={filterArrivals}
-                    >
-                        Show JFK Arrivals
-                    </button>
-                    <button
-                        className={`filter-btn ${activeFilter === 'departures' ? 'active' : ''}`}
-                        onClick={filterDepartures}
-                    >
-                        Show JFK Departures
-                    </button>
-                    {activeFilter !== 'all' && (
-                        <button
-                            className="filter-btn"
-                            onClick={showAllFlights}
-                        >
-                            Show All Flights
-                        </button>
-                    )}
-                    <button className="emergency-button">
-                        Emergency Situation
-                    </button>
-                </div>
+                    );
+                })}
             </div>
+
+            <div className="rightSideFunctions">
+                <div className="runway-status">
+                    <div className="runway-status-item">
+                        RUNWAY STATUS
+                    </div>
+                    <div className={`runway-status-item ${runwayStatus === 'free' ? 'status-free' : 'status-busy'}`}>
+                        {runwayStatus.toUpperCase()}
+                    </div>
+                </div>
+                <button
+                    className={`filter-btn ${activeFilter === 'arrivals' ? 'active' : ''}`}
+                    onClick={filterArrivals}
+                >
+                    Show JFK Arrivals
+                </button>
+                <button
+                    className={`filter-btn ${activeFilter === 'departures' ? 'active' : ''}`}
+                    onClick={filterDepartures}
+                >
+                    Show JFK Departures
+                </button>
+                {activeFilter !== 'all' && (
+                    <button
+                        className="filter-btn"
+                        onClick={showAllFlights}
+                    >
+                        Show All Flights
+                    </button>
+                )}
+                <button className="emergency-button">
+                    Emergency Situation
+                </button>
+            </div>
+
             {showWarning && (
                 <WarningModal onClose={() => setShowWarning(false)} />
             )}
         </div>
-    );
+    </div>
 };
+
+
 
 export default AirportInspector;
