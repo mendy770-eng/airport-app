@@ -1,0 +1,49 @@
+.bording-title{
+    text-align: center;
+    margin: 0 0 10px 0;
+    /* הקטנת margin */
+    padding: 10px 0;
+    /* הקטנת padding */
+    font-size: 20px;
+    /* הקטנת גודל פונט */
+    color: #333;
+    text-transform: uppercase;
+    font-weight: bold;
+    width: 100%;
+    background-color: #f5f5f5;
+    border-bottom: 2px solid #ddd;
+}
+.groundAttendantWinddow{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    height: 500px;
+    width: 700px;
+}
+.searching-bar {
+    display: flex; /* שימוש ב-flexbox */
+    align-items: center; /* יישור אנכי */
+    gap: 10px; /* רווח בין האלמנטים */
+    margin-bottom: 20px; /* רווח תחתון */
+}
+.indication-bar{
+    border: 1px solid black;
+    height: 40px;
+    width: 600px;
+    display: flex;
+    justify-content: center;
+}
+.passangers-list-button{
+    text-align: center;
+    justify-content: center;
+    height: 50px;
+    width: 150px;
+    border: 1px solid black; 
+    border-radius: 60px;
+    padding: 20px;
+    transition: transform 0.3s ease;
+}
+.passangers-list-button:hover{
+  transform: scale(1.1);
+}

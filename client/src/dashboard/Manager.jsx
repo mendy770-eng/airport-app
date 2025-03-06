@@ -1,23 +1,23 @@
 import { useState } from 'react';
 import PersonIcon from '@mui/icons-material/Person';
 import cameraIcon from '../assets/images/camera.png';
-import storeIcon from '../assets/images/store.png';
+import emergencyIcon from '../assets/images/emergency.png'
 import planeIcon from '../assets/images/plane.png';
 import UsersModal from './managerModals/UsersModal';
 import CameraModal from './managerModals/CameraModal';
-import StoreModal from './managerModals/StoreModal';
+import EmergencyModal from './managerModals/EmergencyModal';
 import FlightsListModal from './managerModals/FlightsListModal';
 import './css/manager.css';
 
 const Manager = () => {
     const [showUsersModal, setShowUsersModal] = useState(false);
     const [showCameraModal, setShowCameraModal] = useState(false);
-    const [showStoreModal, setShowStoreModal] = useState(false);
+    const [showEmergencyModal, setEmergencyModal] = useState(false);
     const [showFlightsModal, setShowFlightsModal] = useState(false);
 
     return (
-        <>
-            <div className={`manager-container ${!showUsersModal && !showCameraModal && !showStoreModal && !showFlightsModal ? 'visible' : ''}`}>
+        <div>
+            <div className={`manager-container ${!showUsersModal && !showCameraModal && !showEmergencyModal && !showFlightsModal ? 'visible' : ''}`}>
                 <h2 className="modal-title">MANAGER OFFICE</h2>
 
                 <div className="icons-container">
@@ -43,15 +43,15 @@ const Manager = () => {
                     </div>
 
                     <div className="vertical-group">
-                        <div className="icon-box" onClick={() => setShowStoreModal(true)}>
+                        <div className="icon-box" onClick={() => setEmergencyModal(true)}>
                             <div className="icon-wrapper">
                                 <img
-                                    src={storeIcon}
+                                    src={emergencyIcon}
                                     alt="store"
                                     style={{ width: '70px', height: '70px', objectFit: 'contain' }}
                                 />
                             </div>
-                            <div className="label-wrapper">STORE</div>
+                            <div className="label-wrapper">EMERGENCY</div>
                         </div>
 
                         <div className="icon-box" onClick={() => setShowFlightsModal(true)}>
@@ -69,9 +69,9 @@ const Manager = () => {
             </div>
             <UsersModal showModal={showUsersModal} setShowModal={setShowUsersModal} />
             <CameraModal showModal={showCameraModal} setShowModal={setShowCameraModal} />
-            <StoreModal showModal={showStoreModal} setShowModal={setShowStoreModal} />
+            <EmergencyModal showModal={showEmergencyModal} setShowModal={setEmergencyModal}/>
             <FlightsListModal showModal={showFlightsModal} setShowModal={setShowFlightsModal} />
-        </>
+        </div>
     );
 };
 

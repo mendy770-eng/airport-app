@@ -1,9 +1,9 @@
-import '../managerModals/css/emergencyModal.css';
+import '../managerModals/css/emergencyModal.css'
 
 const EmergencyModal = ({ showModal, setShowModal }) => {
     return (
         showModal && (
-            <div className="modal-overlay">
+            <div className="modal-overlay-emergency">
                 <div className="modal-content emergency-modal">
                     <button className="close-button" onClick={() => setShowModal(false)}>✕</button>
                     <h2 className="emergency-modal-title">Emergency Status</h2>

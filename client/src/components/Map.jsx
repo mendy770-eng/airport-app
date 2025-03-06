@@ -49,7 +49,7 @@ const initialMarkers = [
   {
     position: [40.647680, -73.792892],
     icon: createCustomIcon(ground_attendat),
-    title: "ground_attendant",
+    title: "groundAttendant",
     hebrewTitle: "שער עליה למטוס"
   }
 ];
