@@ -9,14 +9,15 @@ const passengerSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    dateOfBirth: {
+    DateOfBirth: {
         type: Date,
         required: true
     },
-    gender: {
+    flightNumber: {
         type: String,
         required: true
-    },
+    }
 });
 
 const Passenger = mongoose.model('Passenger', passengerSchema);
+module.exports = Passenger;

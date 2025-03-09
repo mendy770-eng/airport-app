@@ -1,37 +1,47 @@
 require('dotenv').config();
 const express = require('express');
-const mongoose = require('mongoose');
 const cors = require('cors');
+const connectDB = require('./db/config');
+
+// Import routes
+const userRouter = require('./api/User/UserRouter');
+const flightRouter = require('./api/flights/flightRouter');
+const markerRouter = require('./api/icons/markerRouter');
+const passengerRouter = require('./api/passengers/passengerRouter');
 
 const app = express();
 
+// Middleware
+app.use(express.json());
 app.use(cors({
-    origin: 'http://localhost:3001', // הקליינט רץ על 3001
+    origin: 'http://localhost:3001',
     credentials: true
 }));
 
-app.use(express.json());
-
 // Routes
-app.use('/api/user', require('./api/User/UserRouter'));
-const flightRouter = require('./api/flights/flightRouter');
+app.use('/api/user', userRouter);
 app.use('/api/flights', flightRouter);
-app.use('/api/markers', require('./api/icons/markerRouter'));
+app.use('/api/markers', markerRouter);
+app.use('/api/passengers', passengerRouter);
 
-const PORT = 5050;
-
-mongoose.connect("mongodb+srv://david:david123456@cluster0.rawvp.mongodb.net/?retryWrites=true&w=majority", {
-    useNewUrlParser: true,
-    useUnifiedTopology: true
-})
-.then(() => {
-    console.log('Connected to MongoDB successfully!');
-    app.listen(PORT, () => {
-        console.log(`Server running on port ${PORT}`);
-    });
-})
-.catch(err => {
-    console.error('Failed to connect to MongoDB:', err);
-    process.exit(1);
+// Error handling middleware
+app.use((err, req, res, next) => {
+    console.error(err.stack);
+    res.status(500).json({ message: 'Something went wrong!' });
 });
-//
+
+const PORT = process.env.PORT || 5002;
+
+const startServer = async () => {
+    try {
+        await connectDB();
+        app.listen(PORT, () => {
+            console.log(`Server running on port ${PORT}`);
+        });
+    } catch (error) {
+        console.error('Failed to start server:', error);
+        process.exit(1);
+    }
+};
+
+startServer();

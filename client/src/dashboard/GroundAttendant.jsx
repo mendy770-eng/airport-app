@@ -1,12 +1,13 @@
 import './css/GroundAttendant.css';
 import { useState } from 'react';
-import PassangerList from './PassangerListModal.jsx'
+import PassangerList from './Ground Attendant modals/PassangerListModal.jsx'
+import NewPassangerModal from './Ground Attendant modals/NewPassangermodal.jsx'
 
 export default function GroundAttendant() {
     const [passengerName, setPassengerName] = useState('');
     const [indicationMessage, setIndicationMessage] = useState('');
     const [showPassangersListModal, setPassengerListModal] = useState(false);
-
+    const [showNewPassangerModal, setNewPassangerModal] = useState(false);
 
 
     const handleSearch = async () => {
@@ -35,7 +36,11 @@ export default function GroundAttendant() {
         <div className='indication-bar'>
             {indicationMessage}
         </div>
-        <div className='passangers-list-button' onClick={() => setPassengerListModal(true)}>GET ALL THE PASSANGERS</div>
-        <PassangerList showModal={showPassangersListModal} setShowModal={setPassengerListModal}/>
+        <div className='buttons-container'>
+            <div className='button-shape' onClick={() => setPassengerListModal(true)}>GET ALL THE PASSANGERS</div>
+            <div className='button-shape' onClick={() => setNewPassangerModal(true)}>ADD A NEW PASSANGER</div>
+        </div>
+        <PassangerList showModal={showPassangersListModal} setShowModal={setPassengerListModal} />
+        <NewPassangerModal showModal={showNewPassangerModal} setShowModal={setNewPassangerModal} />
     </div>
 };

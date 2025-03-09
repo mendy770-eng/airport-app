@@ -754,29 +754,6 @@
     font-weight: bold;  /* אופציונלי - הדגשת הסכום */
 }
 
-.add-to-cart-button {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 100px;
-    height: 30px;
-    border: 1px solid black;
-}
 
-.add-to-cart-button:hover {
-    transform: scale(1.2);
-    transition: transform 0.2s ease-in-out;
-}
 
-.order-message {
-    font-weight: bold;
-    margin-left: 10px;
-}
 
-.order-message.success {
-    color: green;
-}
-
-.order-message.error {
-    color: red;
-}

@@ -1,3 +1,4 @@
+const { log } = require('console');
 const Flight = require('./flightModel');
 const path = require('path');
 const fs = require('fs').promises;
@@ -18,6 +19,8 @@ const getAllFlights = async (req, res) => {
     try {
         const flights = await Flight.find();
         res.status(200).json(flights);
+        console.log({flights});
+        
     } catch (error) {
         console.error('Error fetching flights:', error);
         res.status(500).json({ message: 'Failed to fetch flights', error: error.toString() });

@@ -34,7 +34,7 @@
     display: flex;
     justify-content: center;
 }
-.passangers-list-button{
+.button-shape{
     text-align: center;
     justify-content: center;
     height: 50px;
@@ -44,6 +44,11 @@
     padding: 20px;
     transition: transform 0.3s ease;
 }
-.passangers-list-button:hover{
+.button-shape:hover{
   transform: scale(1.1);
+}
+
+.buttons-container{
+    display: inline-flex;
+    gap: 10px;
 }

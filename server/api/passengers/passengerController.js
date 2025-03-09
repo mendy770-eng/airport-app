@@ -16,8 +16,10 @@ const createPassenger = async (req, res) => {
 const getAllPassengers = async (req, res) => {
     try {
         const passengers = await Passenger.find();
+        console.log('Fetched passengers:', passengers);
         res.status(200).json(passengers);
     } catch (error) {
+        console.error('Error in getAllPassengers:', error);
         res.status(500).json({ message: error.message });
     }
 }   
@@ -59,4 +61,9 @@ const deletePassenger = async (req, res) => {
     }
 }
 
-module.exports = { createPassenger, getAllPassengers, getPassengerByFlightNumber, updatePassenger, deletePassenger };
+module.exports = { 
+    createPassenger,
+    getAllPassengers,
+    getPassengerByFlightNumber, 
+    updatePassenger, 
+    deletePassenger };

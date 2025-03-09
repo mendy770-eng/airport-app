@@ -4,8 +4,7 @@ import '../managerModals/css/cameraModal.css';
 const CameraModal = ({ showModal, setShowModal }) => {
     return (
         showModal && (
-            <div className="modal-overlay">
-                <div className="modal-content camera-modal">
+                <div className="modal-content-camera-modal">
                     <h2 className="camera-modal-title">Cameras accross the airport</h2>
                     <button className="close-button" onClick={() => setShowModal(false)}>✕</button>
                     <div className="video-container">
@@ -21,7 +20,6 @@ const CameraModal = ({ showModal, setShowModal }) => {
                         </video>
                     </div>
                 </div>
-            </div>
         )
     );
 };

@@ -1,6 +1,10 @@
 const express = require('express');
 const router = express.Router();
-const { createPassenger, getAllPassengers, getPassengerByFlightNumber, updatePassenger, deletePassenger } = require('./passengerController');
+const { createPassenger,
+        getAllPassengers,
+        getPassengerByFlightNumber, 
+        updatePassenger, 
+        deletePassenger } = require('./passengerController');
 
 
 //יצירת נוסע
