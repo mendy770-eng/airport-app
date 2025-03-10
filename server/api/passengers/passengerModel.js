@@ -16,6 +16,10 @@ const passengerSchema = new mongoose.Schema({
     flightNumber: {
         type: String,
         required: true
+    },
+    boarded: {
+        type: Boolean,
+        required: true
     }
 });
 

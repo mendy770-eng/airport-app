@@ -6,7 +6,6 @@ const { createPassenger,
         updatePassenger, 
         deletePassenger } = require('./passengerController');
 
-
 //יצירת נוסע
 router.post('/', createPassenger);
 //קבלת כל הנוסעים

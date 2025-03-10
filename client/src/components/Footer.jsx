@@ -1,8 +1,11 @@
+import { useState } from 'react';
 import './css/Footer.css';
 import Time from '../utils/Time.jsx';
 import WeatherIcon from '../assets/images/weatherIcon.png';
+import Weather from '../utils/Weather.jsx';
 
 const BottomBar = () => {
+  const [showWeather, setShowWeather] = useState(false);
   return (
     <footer className="footer bg-neutral text-neutral-content items-center p-4">
       <aside className="grid-flow-col items-center">
@@ -20,7 +23,8 @@ const BottomBar = () => {
         <p>Copyright © {new Date().getFullYear()} - All right reserved</p>
       </aside>
       <Time className='watch' />
-      <img src={WeatherIcon} alt="Weather" className="weather-icon" />
+      <img src={WeatherIcon} alt="Weather" className="weather-icon" onClick={() => setShowWeather(true)} />
+      {/* <Weather showWeather={showWeather} setShowWeather={setShowWeather} /> */}
     </footer>
   );
 }

@@ -2,15 +2,17 @@ const Passenger = require('./passengerModel');
 
 // יצירת נוסע
 const createPassenger = async (req, res) => {
-    const { name, email, phone } = req.body;
-
     try {
-        const passenger = await Passenger.create({ name, email, phone });
+        const passenger = await Passenger.create({
+            ...req.body,
+            boarded: false // וידוא שהשדה borded מוגדר כ-false
+        });
         res.status(201).json(passenger);
     } catch (error) {
+        console.error('Error creating passenger:', error);
         res.status(500).json({ message: error.message });
     }
-}       
+};
 
 // קבלת כל הנוסעים
 const getAllPassengers = async (req, res) => {
