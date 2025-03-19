@@ -4,7 +4,7 @@ import Time from '../utils/Time.jsx';
 import WeatherIcon from '../assets/images/weatherIcon.png';
 import Weather from '../utils/Weather.jsx';
 
-const BottomBar = () => {
+const Footer = () => {
   const [showWeather, setShowWeather] = useState(false);
   return (
     <footer className="footer bg-neutral text-neutral-content items-center p-4">
@@ -23,10 +23,10 @@ const BottomBar = () => {
         <p>Copyright © {new Date().getFullYear()} - All right reserved</p>
       </aside>
       <Time className='watch' />
-      <img src={WeatherIcon} alt="Weather" className="weather-icon" onClick={() => setShowWeather(true)} />
-      {/* <Weather showWeather={showWeather} setShowWeather={setShowWeather} /> */}
+      <img src={WeatherIcon} alt="Weather" className="weather-icon" onClick={() => setShowWeather(!showWeather)} />
+      {showWeather && <Weather showWeather={showWeather} setShowWeather={setShowWeather} />}
     </footer>
   );
 }
 
-export default BottomBar;
+export default Footer;

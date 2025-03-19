@@ -8,7 +8,9 @@ const AirportInspector = () => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [activeFilter, setActiveFilter] = useState('all'); // 'all', 'arrivals', 'departures'
-    const [runwayStatus, setRunwayStatus] = useState('free');
+    const [runwayStatus, setRunwayStatus] = useState(() => {
+        return localStorage.getItem('runwayStatus') || 'free';
+    });
     const [showWarning, setShowWarning] = useState(false);
     const [disabledFlights, setDisabledFlights] = useState([]);
 
@@ -19,25 +21,22 @@ const AirportInspector = () => {
         }
         console.log(`Flight ${flightNumber} approved`);
         setRunwayStatus('busy');
+        localStorage.setItem('runwayStatus', 'busy');
+        
         setTimeout(() => {
             setRunwayStatus('free');
+            localStorage.setItem('runwayStatus', 'free');
         }, 10000);
     };
 
     const handleHold = (flightNumber) => {
-        if (runwayStatus === 'busy') {
-            setShowWarning(true);
-            return;
-        }
         console.log(`Flight ${flightNumber} held`);
-
-        // הוספת הטיסה לרשימת הטיסות המושבתות
         setDisabledFlights(prev => [...prev, flightNumber]);
+    };
 
-        // הסרת הטיסה מהרשימה אחרי 10 שניות
-        setTimeout(() => {
-            setDisabledFlights(prev => prev.filter(num => num !== flightNumber));
-        }, 10000);
+    const handleRelease = (flightNumber) => {
+        console.log(`Flight ${flightNumber} released`);
+        setDisabledFlights(prev => prev.filter(num => num !== flightNumber));
     };
 
     const filterArrivals = () => {
@@ -109,8 +108,20 @@ const AirportInspector = () => {
                             </div>
                             <div className="flight-actions">
                                 {disabledFlights.includes(flight.flightNumber) ? (
-                                    <div className="hold-status">
-                                        THE FLIGHT IS ON HOLD
+                                    <div className="hold-container">
+                                        <div className="hold-status">
+                                            <div>THE FLIGHT</div>
+                                            <div>IS ON</div>
+                                            <div>HOLD</div>
+                                        </div>
+                                        <button
+                                            className="release-btn"
+                                            onClick={() => handleRelease(flight.flightNumber)}
+                                        >
+                                            <div>RELEASE</div>
+                                            <div>THE</div>
+                                            <div>FLIGHT</div>
+                                        </button>
                                     </div>
                                 ) : (
                                     <>
@@ -174,7 +185,5 @@ const AirportInspector = () => {
         </div>
     </div>
 };
-
-
 
 export default AirportInspector;

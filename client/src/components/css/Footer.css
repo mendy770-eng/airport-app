@@ -3,6 +3,7 @@
 }
 
 .footer {
+    z-index: 1000;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -86,4 +87,8 @@
     .right-section {
         justify-content: center;
     }
+}
+
+.watch {
+    margin-right: 100px;
 }

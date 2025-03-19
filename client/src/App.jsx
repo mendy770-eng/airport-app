@@ -11,7 +11,7 @@ const App = () => {
             <main className="main-content">
                 <Map />
             </main>
-            <Footer />
+            <Footer/>
         </div>
       </UserContextProvider>
     );

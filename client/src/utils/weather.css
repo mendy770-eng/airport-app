@@ -1,11 +1,78 @@
-.weather-window{
-    height: 300px;
-    width: 300px;
-    background-color: #f0f0f0;
-    border: 1px solid black;
-    border-radius: 10px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
+.weather-window {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 1000;
+  height: 300px;
+  width: 300px;
+  background-color: white;
+  border: 1px solid black;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  padding: 20px;
+}
+
+.weather-title {
+  text-align: center;
+  margin: 0 0 10px 0;
+  /* הקטנת margin */
+  padding: 10px 0;
+  /* הקטנת padding */
+  font-size: 24px;
+  /* הקטנת גודל פונט */
+  color: #333;
+  text-transform: uppercase;
+  font-weight: bold;
+  width: 100%;
+  background-color: #f5f5f5;
+  border-bottom: 2px solid #ddd;
+ }
+
+.close-weather-window {
+  position: absolute;
+  top: 2px;
+  right: 10px;
+  color: rgb(88, 76, 76);
+  font-size: 23px;
+  margin-right: 1px;
+  margin-top: 1px
+}
+
+.close-weather-window:hover {
+  color: black;
+}
+
+.weather-content {
+  width: 100%;
+}
+
+.weather-info {
+  margin-top: 20px;
+  text-align: left;
+  width: 100%;
+}
+
+.weather-info p {
+  margin: 10px 0;
+  font-size: 28px;
+  /* text-align: center; */
+  color: black;
+  padding-left: 30px;
+}
+
+h2 {
+  color: #333;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.weather-inner-icon {
+  width: 30px;
+  height: 30px;
+  margin-right: 0px;
+  vertical-align: sub;
 }

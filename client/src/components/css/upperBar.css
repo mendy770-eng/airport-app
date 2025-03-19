@@ -51,12 +51,6 @@
     width: 100%;
 }
 
-.weather-icon {
-    height: 60px;
-    cursor: pointer;
-    transition: transform 0.2s ease;
-}
-
 /* עמודה ימנית - משתמש */
 .user-section {
     margin-right: 4px;
