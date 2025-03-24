@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import './css/technician.css';
 import fuelPump from '../assets/images/fuelPump.png';
 import Wing from '../assets/images/wing.png';
@@ -6,25 +6,41 @@ import Wrench from '../assets/images/wrench.png';
 import FrontWheel from '../assets/images/frontWheel.png';
 
 const Technician = () => {
-    const [quantities, setQuantities] = useState({
-        fuelPump: 0,
-        wing: 0,
-        wrench: 0,
-        frontWheel: 0
+    const [quantities, setQuantities] = useState(() => {
+        const savedQuantities = localStorage.getItem('toolQuantities');
+        console.log('Initial load from localStorage:', savedQuantities);
+        return savedQuantities ? JSON.parse(savedQuantities) : {
+            fuelPump: 0,
+            wing: 0,
+            wrench: 0,
+            frontWheel: 0
+        };
     });
 
+    // שמירה ל-localStorage בכל פעם שquantities משתנה
+    useEffect(() => {
+        console.log('Saving to localStorage:', quantities);
+        localStorage.setItem('toolQuantities', JSON.stringify(quantities));
+    }, [quantities]);
+
     const handleUse = (tool) => {
-        setQuantities(prev => ({
-            ...prev,
-            [tool]: prev[tool] > 0 ? prev[tool] - 1 : 0
-        }));
+        setQuantities(prev => {
+            const newQuantities = {
+                ...prev,
+                [tool]: prev[tool] > 0 ? prev[tool] - 1 : 0
+            };
+            return newQuantities;
+        });
     };
 
     const handleAdd = (tool) => {
-        setQuantities(prev => ({
-            ...prev,
-            [tool]: prev[tool] + 1
-        }));
+        setQuantities(prev => {
+            const newQuantities = {
+                ...prev,
+                [tool]: prev[tool] + 1
+            };
+            return newQuantities;
+        });
     };
 
     return <div>

@@ -54,3 +54,67 @@
     display: inline-flex;
     gap: 10px;
 }
+
+.flight-select {
+    display: flex;
+    width: 300px;
+    padding: 8px;
+    margin: 10px 0;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 16px;
+    background-color: white;
+}
+
+.flight-select:focus {
+    outline: none;
+    border-color: #007bff;
+    box-shadow: 0 0 0 2px rgba(0,123,255,.25);
+}
+
+.passenger-found {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+}
+
+.board-button {
+    padding: 8px 16px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.board-button:hover {
+    background-color: #45a049;
+}
+
+/* מונע אינטראקציה עם שדה החיפוש כשאין טיסה נבחרת */
+input:disabled, button:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.got-off-button {
+    padding: 8px 16px;
+    background-color: #ff0000;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.got-off-button:hover {
+    background-color: #cc0000;
+}
+
+.flight-full {
+    color: #ff0000;
+    font-weight: bold;
+    font-size: 1.2em;
+}

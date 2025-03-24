@@ -19,6 +19,7 @@ const passengerSchema = new mongoose.Schema({
     },
     boarded: {
         type: Boolean,
+        default: false,
         required: true
     }
 });
