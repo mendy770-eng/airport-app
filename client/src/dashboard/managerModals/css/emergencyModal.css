@@ -28,6 +28,7 @@
     display: flex;
     text-align: center;
     justify-content: center;
+    align-items: center;
     /* margin-top: 80px; */
     height: 70px;
     width: 400px;
@@ -36,4 +37,24 @@
     background-color: green;
     border-radius: 10px;
     animation: blink 2s infinite;
+}
+
+.emergency-status.emergency-status--declared {
+    background-color: #d32f2f;
+    color: #fff;
+    animation: blink 1s infinite;
+}
+
+.all-clear-button {
+    margin-top: 12px;
+    padding: 8px 16px;
+    border-radius: 8px;
+    border: none;
+    background-color: #1976d2;
+    color: #fff;
+    cursor: pointer;
+}
+
+.all-clear-button:hover {
+    background-color: #115293;
 }

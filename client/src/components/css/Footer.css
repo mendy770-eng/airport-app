@@ -24,8 +24,11 @@
 .time-container {
     display: flex;
     align-items: center;
+    position: fixed;
+    right: 618px;
+    bottom: 18px;
     gap: 0.5rem;
-    font-size: 1.2rem;
+    font-size: 1.6rem;
     font-weight: bold;
     color: white;
     font-family: 'Times New Roman', Times, serif;

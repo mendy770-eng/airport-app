@@ -426,9 +426,11 @@
 }
 
 .flights-modal h2 {
+    display: flex;
     text-align: center;
-    margin-bottom: 20px;
-    padding-bottom: 10px;
+    justify-content: center;
+    align-items: center;
+    margin-top: 1px;
     border-bottom: 2px solid #f0f0f0;
     color: #333;
     font-size: 20px;

@@ -26,17 +26,27 @@ const getAllPassengers = async (req, res) => {
     }
 }   
 
-// קבלת נוסע לפי מספר טיסה
+// קבלת נוסעים לפי מספר טיסה
 const getPassengerByFlightNumber = async (req, res) => {
-    const { flightNumber } = req.params;
+    try {
+        const { flight } = req.query;
+        
+        // אם לא נבחרה טיסה, מחזיר את כל הנוסעים
+        if (!flight) {
+            const allPassengers = await Passenger.find();
+            return res.status(200).json(allPassengers);
+        }
 
-    try {   
-        const passengers = await Passenger.find({ flightNumber });
+        // אם נבחרה טיסה, מחזיר רק את הנוסעים של אותה טיסה
+        const passengers = await Passenger.find({ flightNumber: flight });
+        console.log('Found passengers for flight', flight, ':', passengers);
+        
         res.status(200).json(passengers);
     } catch (error) {
+        console.error('Error in getPassengerByFlightNumber:', error);
         res.status(500).json({ message: error.message });
     }
-}   
+};
 
 // עדכון נוסע
 const updatePassenger = async (req, res) => {
@@ -126,6 +136,26 @@ const getPassengerByNameAndFlight = async (req, res) => {
     }
 };
 
+// הוספת פונקציה חדשה שמטפלת בשני המקרים
+const getPassengers = async (req, res) => {
+    try {
+        const { flight } = req.query;
+        
+        // אם יש פרמטר flight, נשתמש בפונקציה הקיימת
+        if (flight) {
+            const passengers = await Passenger.find({ flightNumber: flight });
+            return res.status(200).json(passengers);
+        }
+        
+        // אחרת נחזיר את כל הנוסעים
+        const allPassengers = await Passenger.find();
+        return res.status(200).json(allPassengers);
+    } catch (error) {
+        console.error('Error in getPassengers:', error);
+        res.status(500).json({ message: error.message });
+    }
+};
+
 module.exports = { 
     createPassenger,
     getAllPassengers,
@@ -133,5 +163,6 @@ module.exports = {
     updatePassenger, 
     deletePassenger,
     boardPassenger,
-    getPassengerByNameAndFlight
+    getPassengerByNameAndFlight,
+    getPassengers
 };

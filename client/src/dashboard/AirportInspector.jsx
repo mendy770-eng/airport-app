@@ -19,6 +19,7 @@ const AirportInspector = () => {
             setShowWarning(true);
             return;
         }
+        
         console.log(`Flight ${flightNumber} approved`);
         setRunwayStatus('busy');
         localStorage.setItem('runwayStatus', 'busy');
@@ -174,7 +175,14 @@ const AirportInspector = () => {
                         Show All Flights
                     </button>
                 )}
-                <button className="emergency-button">
+                <button className="emergency-button" onClick={() => {
+                    try {
+                        localStorage.setItem('emergencyStatus', 'declared');
+                        window.dispatchEvent(new CustomEvent('emergency-status-change', { detail: { status: 'declared' } }));
+                    } catch (e) {
+                        console.error('Failed to declare emergency:', e);
+                    }
+                }}>
                     Emergency Situation
                 </button>
             </div>

@@ -70,7 +70,7 @@ const NewPassangerModal = ({ showModal, setShowModal, editMode = false, passenge
         <div className="modal-overlay">
             <div className="modal-content">
                 <button className="close-button" onClick={() => setShowModal(false)}>✕</button>
-                <h2 className='modal-title'>{editMode ? 'Edit Passenger' : 'Add New Passenger'}</h2>
+                <h2 className='modal-title-passangerList'>{editMode ? 'Edit Passenger' : 'Add New Passenger'}</h2>
                 <div className="form-container">
                     <div className="input-group">
                         <label>First Name:</label>

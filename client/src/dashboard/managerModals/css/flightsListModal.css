@@ -99,9 +99,6 @@
 }
 
 .add-button-flights-list {
-    position: absolute;
-    left: 10px;
-    top: 10px;
     border: none;
     background: none;
     color: #007bff;
@@ -110,7 +107,8 @@
     padding: 5px;
     font-weight: bold;
     transition: transform 0.2s;
-    z-index: 2;
+    margin-right: 540px;
+    margin-top: 12px;   
 }
 
 .add-button-flights-list:hover {

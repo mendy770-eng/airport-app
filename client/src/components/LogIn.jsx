@@ -5,6 +5,7 @@ import PersonAddIcon from '@mui/icons-material/PersonAdd';
 import PropTypes from 'prop-types';
 import { UserContext } from './UserContext';
 import { login } from '../api/users';
+import './css/Login.css';
 
 export default function LogIn(props) {
     const [email, setEmail] = useState('');
@@ -33,7 +34,7 @@ export default function LogIn(props) {
     return <Box sx={{ padding: '5px' }}>
         <Stack spacing={1}>
             {error && <Typography color='error' variant='h6' >{error}</Typography>}
-            <h1>Login</h1>
+            <h1 className='login-title'>Login</h1>
             <TextField
                 variant="outlined"
                 label="Email"

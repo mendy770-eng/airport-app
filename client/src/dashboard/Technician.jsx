@@ -50,7 +50,8 @@ const Technician = () => {
             <div className='line'>
                 <div className='technician-tool-type'>
                     <img src={fuelPump} alt='fuelPump' className='tool-image'/>
-                    <div className='tool-description'>Fuel Pump</div>
+                    <div className='tool-description'>Fuel Liters</div>
+                    <div>SKU: SF934</div>
                     <div>current quantity: <span className='current-quantity'>{quantities.fuelPump}</span></div>
                     <div className='buttons-container'>
                         <div className='usage-button' onClick={() => handleUse('fuelPump')}>use</div>
@@ -60,6 +61,7 @@ const Technician = () => {
                 <div className='technician-tool-type'>
                     <img src={Wing} alt='Wing' className='tool-image'/>
                     <div className='tool-description'>Wing</div>
+                    <div>SKU: MN694</div>
                     <div>current quantity: <span className='current-quantity'>{quantities.wing}</span></div>
                     <div className='buttons-container'>
                         <div className='usage-button' onClick={() => handleUse('wing')}>use</div>
@@ -72,6 +74,7 @@ const Technician = () => {
                 <div className='technician-tool-type'>
                     <img src={Wrench} alt='Wrench' className='tool-image'/>
                     <div className='tool-description'>Wrench</div>
+                    <div>SKU: PL235</div>
                     <div>current quantity: <span className='current-quantity'>{quantities.wrench}</span></div>
                     <div className='buttons-container'>
                         <div className='usage-button' onClick={() => handleUse('wrench')}>use</div>
@@ -81,6 +84,7 @@ const Technician = () => {
                 <div className='technician-tool-type'>
                     <img src={FrontWheel} alt='FrontWheel' className='tool-image'/>
                     <div className='tool-description'>Front Wheel</div>
+                    <div>SKU: PY537</div>
                     <div>current quantity: <span className='current-quantity'>{quantities.frontWheel}</span></div>
                     <div className='buttons-container'>
                         <div className='usage-button' onClick={() => handleUse('frontWheel')}>use</div>

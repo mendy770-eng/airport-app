@@ -1,0 +1,19 @@
+.authentication-indicator {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 200px;
+    width: 400px;
+    background-color: #f0f0f0;
+    color: white;
+    font-size: 24px;
+    font-weight: bold;
+    text-align: center;
+}
+.authentication-indicator-title {
+    font-size: 24px;
+    font-weight: bold;
+    text-align: center;
+    font-family: 'warning';
+    color: red;
+}

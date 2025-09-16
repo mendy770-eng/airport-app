@@ -1,7 +1,7 @@
 import './css/GroundAttendant.css';
 import { useState, useEffect } from 'react';
-import PassangerList from './Ground Attendant modals/PassangerListModal.jsx'
-import NewPassangerModal from './Ground Attendant modals/NewPassangermodal.jsx'
+import PassangerListModal from './Ground Attendant modals/PassangerListModal';
+import NewPassangerModal from './Ground Attendant modals/NewPassangermodal';
 
 export default function GroundAttendant() {
     const [passengerName, setPassengerName] = useState('');
@@ -53,16 +53,16 @@ export default function GroundAttendant() {
 
         try {
             console.log('Searching for:', { flight: selectedFlight, name: passengerName });
-            
+
             const response = await fetch(`/api/passengers/search?name=${passengerName}&flight=${selectedFlight}`);
             if (!response.ok) {
                 console.error('Search failed:', response.status, response.statusText);
                 throw new Error('Search failed');
             }
-            
+
             const data = await response.json();
             console.log('Search results:', data);
-            
+
             if (data.length === 0) {
                 setIndicationMessage("The passenger isn't registered for the flight");
             } else {
@@ -71,14 +71,14 @@ export default function GroundAttendant() {
                     <div className="passenger-found">
                         <div>The passenger registered</div>
                         {passenger.boarded === true ? (
-                            <button 
+                            <button
                                 className="got-off-button"
                                 onClick={() => handleGotOff(passenger)}
                             >
                                 Got off the flight
                             </button>
                         ) : (
-                            <button 
+                            <button
                                 className="board-button"
                                 onClick={() => handleBoarding(passenger)}
                             >
@@ -108,7 +108,7 @@ export default function GroundAttendant() {
             });
 
             if (!response.ok) throw new Error('Boarding failed');
-            
+
             await response.json();
             setBoardedCounts(prev => ({
                 ...prev,
@@ -136,14 +136,14 @@ export default function GroundAttendant() {
             });
 
             if (!response.ok) throw new Error('Failed to update boarding status');
-            
+
             await response.json();
             setBoardedCounts(prev => ({
                 ...prev,
                 [selectedFlight]: Math.max(0, (prev[selectedFlight] || 0) - 1)
             }));
             setIndicationMessage("Passenger got off the flight!");
-            
+
             // עדכון מיידי של התצוגה
             handleSearch();
         } catch (error) {
@@ -162,43 +162,45 @@ export default function GroundAttendant() {
         return <div><span>{count} </span>Passangers boarded from 10</div>;
     };
 
-    return <div className='groundAttendantWinddow'>
-        <h1 className='bording-title'>bording terminal</h1>
-        <select 
-            value={selectedFlight}
-            onChange={(e) => setSelectedFlight(e.target.value)}
-            className='flight-select'
-        >
-            <option value="">Select Flight Number</option>
-            {flights.map((flight) => (
-                <option key={flight.flightNumber} value={flight.flightNumber}>
-                    Flight {flight.flightNumber} - {flight.source} to {flight.destination}
-                </option>
-            ))}
-        </select>
-        {getBoardingStatus()}
-        <div className='searching-bar'>
-            <h4>Type the passengers name: </h4>
-            <input
-                value={passengerName}
-                onChange={(e) => setPassengerName(e.target.value)}
-                disabled={!selectedFlight}
-            />
-            <button 
-                onClick={handleSearch}
-                disabled={!selectedFlight}
+    return (
+        <div className='groundAttendantWinddow'>
+            <h1 className='bording-title'>bording terminal</h1>
+            <select
+                value={selectedFlight}
+                onChange={(e) => setSelectedFlight(e.target.value)}
+                className='flight-select'
             >
-                search
-            </button>
+                <option value="">Select Flight Number</option>
+                {flights.map((flight) => (
+                    <option key={flight.flightNumber} value={flight.flightNumber}>
+                        Flight {flight.flightNumber} - {flight.source} to {flight.destination}
+                    </option>
+                ))}
+            </select>
+            {getBoardingStatus()}
+            <div className='searching-bar'>
+                <h4>Type the passengers name: </h4>
+                <input
+                    value={passengerName}
+                    onChange={(e) => setPassengerName(e.target.value)}
+                    disabled={!selectedFlight}
+                />
+                <button
+                    onClick={handleSearch}
+                    disabled={!selectedFlight}
+                >
+                    search
+                </button>
+            </div>
+            <div className='indication-bar'>
+                {indicationMessage}
+            </div>
+            <div className='buttons-container'>
+                <div className='button-shape' onClick={() => setPassengerListModal(true)}>GET ALL THE PASSANGERS</div>
+                <div className='button-shape' onClick={() => setNewPassangerModal(true)}>ADD A NEW PASSANGER</div>
+            </div>
+            <PassangerListModal showModal={showPassangersListModal} setShowModal={setPassengerListModal} />
+            <NewPassangerModal showModal={showNewPassangerModal} setShowModal={setNewPassangerModal} />
         </div>
-        <div className='indication-bar'>
-            {indicationMessage}
-        </div>
-        <div className='buttons-container'>
-            <div className='button-shape' onClick={() => setPassengerListModal(true)}>GET ALL THE PASSANGERS</div>
-            <div className='button-shape' onClick={() => setNewPassangerModal(true)}>ADD A NEW PASSANGER</div>
-        </div>
-        <PassangerList showModal={showPassangersListModal} setShowModal={setPassengerListModal} />
-        <NewPassangerModal showModal={showNewPassangerModal} setShowModal={setNewPassangerModal} />
-    </div>
+    )
 };

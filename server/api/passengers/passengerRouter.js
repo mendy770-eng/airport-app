@@ -6,15 +6,15 @@ const { createPassenger,
         updatePassenger, 
         deletePassenger,
         boardPassenger,
-        getPassengerByNameAndFlight } = require('./passengerController');
+        getPassengerByNameAndFlight,
+        getPassengers } = require('./passengerController');
 
 // סדר הנתיבים חשוב - ספציפי לפני כללי
 router.post('/board', boardPassenger);
-router.get('/search', getPassengerByNameAndFlight);  // קודם הנתיב הספציפי
-router.get('/:flightNumber', getPassengerByFlightNumber);
+router.get('/search', getPassengerByNameAndFlight);
 router.put('/:id', updatePassenger);
 router.delete('/:id', deletePassenger);
 router.post('/', createPassenger);
-router.get('/', getAllPassengers);  // הנתיב הכללי בסוף
+router.get('/', getPassengers);
 
 module.exports = router;
