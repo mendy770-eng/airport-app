@@ -13,6 +13,7 @@ const AirportInspector = () => {
     });
     const [showWarning, setShowWarning] = useState(false);
     const [disabledFlights, setDisabledFlights] = useState([]);
+    const [weatherData, setWeatherData] = useState(null);
 
     const handleApprove = (flightNumber) => {
         if (runwayStatus === 'busy') {
@@ -40,14 +41,18 @@ const AirportInspector = () => {
         setDisabledFlights(prev => prev.filter(num => num !== flightNumber));
     };
 
+    const sortByDeparture = (list) => {
+        return [...list].sort((a, b) => new Date(a.departure) - new Date(b.departure));
+    };
+
     const filterArrivals = () => {
         setActiveFilter('arrivals');
-        setFilteredFlights(flights.filter(flight => flight.destination === 'JFK'));
+        setFilteredFlights(sortByDeparture(flights.filter(flight => flight.destination === 'JFK')));
     };
 
     const filterDepartures = () => {
         setActiveFilter('departures');
-        setFilteredFlights(flights.filter(flight => flight.source === 'JFK'));
+        setFilteredFlights(sortByDeparture(flights.filter(flight => flight.source === 'JFK')));
     };
 
     const showAllFlights = () => {
@@ -73,8 +78,9 @@ const AirportInspector = () => {
                 const response = await fetch('/api/flights');  // שימוש ב-endpoint של המונגו
                 if (!response.ok) throw new Error('Failed to fetch flights');
                 const data = await response.json();
-                setFlights(data);
-                setFilteredFlights(data);
+                const sorted = [...data].sort((a, b) => new Date(a.departure) - new Date(b.departure));
+                setFlights(sorted);
+                setFilteredFlights(sorted);
             } catch (error) {
                 console.error('Error fetching flights:', error);
                 setError(error.message);
@@ -84,6 +90,21 @@ const AirportInspector = () => {
         };
 
         fetchFlights();
+    }, []);
+
+    useEffect(() => {
+        const fetchWeather = async () => {
+            try {
+                const API_KEY = '275a63a970bc3a6bc9816876fd40b9f7';
+                const response = await fetch(`https://api.openweathermap.org/data/2.5/weather?q=New%20York&units=metric&appid=${API_KEY}`);
+                if (!response.ok) return;
+                const data = await response.json();
+                setWeatherData(data);
+            } catch {
+                // ignore weather errors in inspector
+            }
+        };
+        fetchWeather();
     }, []);
 
     if (loading) return <div>loading flights information...</div>;
@@ -185,6 +206,14 @@ const AirportInspector = () => {
                 }}>
                     Emergency Situation
                 </button>
+                <div className={`weather-indicator ${weatherData && weatherData.main && typeof weatherData.main.temp === 'number' ? (weatherData.main.temp < 30 ? 'weather-cool' : 'weather-hot') : ''}`}>
+                    <div>THE WEATHER RIGHT NOW:</div>
+                    <div className="weather-temperature">{
+                        weatherData && weatherData.main && weatherData.weather && weatherData.weather[0]
+                            ? `${Math.round(weatherData.main.temp)}°C, ${weatherData.weather[0].description}`
+                            : 'loading...'
+                    }</div>
+                </div>
             </div>
 
             {showWarning && (

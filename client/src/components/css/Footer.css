@@ -50,6 +50,7 @@
     height: 40px;
     transition: transform 0.3s ease;
     margin-right: 60px;
+    cursor: pointer;
 }
 
 .weather-icon:hover {

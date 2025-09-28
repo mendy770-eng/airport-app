@@ -351,11 +351,9 @@
     cursor: pointer;
     font-size: 18px;
     padding: 5px;
-    z-index: 4000; /* ensure close is above any header/tooltip layers */
 }
 
 .close-button:hover {
-    z-index: 4001; /* keep on top even during hover */
 }
 
 .flights-modal {

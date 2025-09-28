@@ -218,6 +218,53 @@
     margin-top: 0;
 }
 
+.weather-indicator {
+    height: 100px;
+    width: 150px;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    cursor: default;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    font-size: 14.5px;
+    color: #333;
+}
+
+@keyframes coolBlink {
+    0% { background-color: #e6f7ff; }
+    50% { background-color: #ccefff; }
+    100% { background-color: #e6f7ff; }
+}
+
+@keyframes hotBlink {
+    0% { background-color: #fff7e6; }
+    50% { background-color: #ffefcc; }
+    100% { background-color: #fff7e6; }
+}
+
+.weather-cool {
+    animation: coolBlink 1.2s infinite;
+}
+
+.weather-hot {
+    animation: hotBlink 1.2s infinite;
+}
+
+/* Make only the label bold */
+.weather-indicator > div:first-child {
+    font-weight: bold;
+}
+
+.weather-temperature {
+    font-weight: normal;
+    font-size: 20px;
+    margin-top: 20px;
+}
+
 .close-button {
     position: absolute;
     top: 5px;
