@@ -1,7 +1,8 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState, useContext } from 'react';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import './css/map.css';
+import { UserContext } from './UserContext';
 import control_tower from "../assets/images/control tower.jpg"
 import managerOffice from "../assets/images/managerOffice.png"
 import ground_attendat from "../assets/images/ground attendant.png"
@@ -88,6 +89,9 @@ const Map = () => {
   // ניהול state של הקומפוננטה
   const [activeMarker, setActiveMarker] = useState(null);  // הסמן הנוכחי שנלחץ
   const [markersPositions, setMarkersPositions] = useState(initialMarkers);  // מיקומי כל הסמנים
+  const { user } = useContext(UserContext) || {};
+  const userRole = (user && (user.permission || user.role)) ? (user.permission || user.role) : null;
+  const canManageMarkers = userRole === 'manager';
 
   /**
    * אפקט לאתחול המפה - מתבצע פעם אחת בטעינה
@@ -115,6 +119,8 @@ const Map = () => {
       );
 
       map.fitBounds(bounds);  // התאמת המפה לגבולות שהוגדרו
+      map.setMaxBounds(bounds); // קיבוע גבולות מקסימליים
+      map.setMaxBoundsViscosity?.(1.0);
 
       // הוספת שכבת המפה הבסיסית מ-OpenStreetMap
       L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -171,13 +177,14 @@ const Map = () => {
         // יצירת סמן חדש עם האייקון המתאים
         const marker = L.marker(location.position, {
           icon: location.icon,
-          draggable: true  // Allow dragging for all users
+          draggable: canManageMarkers  // רק מנהל יכול לגרור
         })
           // הוספת חלון קופץ עם הכותרת בעברית
           .bindPopup(location.hebrewTitle, {
             autoClose: true,
             closeOnClick: true,
             closeButton: false,
+            className: 'centered-popup'
           })
           .addTo(mapRef.current);
 
@@ -193,6 +200,7 @@ const Map = () => {
 
         // טיפול בסיום גרירת סמן
         marker.on('dragend', (event) => {
+          if (!canManageMarkers) return;
           const position = event.target.getLatLng();
           const newPosition = [position.lat, position.lng];
           
@@ -213,7 +221,7 @@ const Map = () => {
         });
       });
     }
-  }, [markersPositions]);
+  }, [markersPositions, canManageMarkers]);
 
   /**
    * אפקט לטעינת מיקומי הסמנים מהשרת בטעינה הראשונית

@@ -13,6 +13,8 @@
 }
 
 .flights-modal-header {
+    position: relative;
+    top: -30px;
     display: grid;
     grid-template-columns: min-content 1fr min-content; /* plus | title | close */
     align-items: center;
