@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { createPortal } from 'react-dom';
 import ModeEditOutlineIcon from '@mui/icons-material/ModeEditOutline';
 import garbageIcon from '../../assets/images/garbage.png';
 import '../managerModals/css/flightsListModal.css';
@@ -16,6 +17,7 @@ const FlightsListModal = ({ showModal, setShowModal }) => {
         arrival: ''
     });
     const [isEditing, setIsEditing] = useState(false);
+    const [tooltip, setTooltip] = useState({ visible: false, x: 0, y: 0, text: '' });
 
     const fetchFlights = async () => {
         try {
@@ -113,22 +115,65 @@ const FlightsListModal = ({ showModal, setShowModal }) => {
         }
     }, [showModal]);
 
+    // Ensure tooltips never linger when switching views or closing modal
+    useEffect(() => {
+        setTooltip({ visible: false, x: 0, y: 0, text: '' });
+    }, [showAddModal, showModal]);
+
     const flightList = flights || [];
 
     return (
         showModal && (
             <div className="modal-overlay">
-                <div className="modal-content flights-modal">
+                <div className={`modal-content flights-modal ${showAddModal ? 'add-flight-narrow' : ''}`}>
                     {!showAddModal ? (
                         <>
-                            <div className="modal-header">
-                                <div className="action-icon-tooltip">
-                                    <button className="add-button-flights-list" onClick={handleAddNewFlight}>+</button>
-                                    <span className="tooltiptext">Add New Flight</span>
+                            <div className="flights-modal-header">
+                                <div
+                                    className="action-icon-tooltip"
+                                    onMouseEnter={(e) => {
+                                        const rect = e.currentTarget.getBoundingClientRect();
+                                        setTooltip({
+                                            visible: true,
+                                            x: rect.left + rect.width / 2,
+                                            y: rect.top - 8,
+                                            text: 'Add New Flight'
+                                        });
+                                    }}
+                                    onMouseLeave={() => setTooltip({ visible: false, x: 0, y: 0, text: '' })}
+                                >
+                                    <button
+                                        className="add-button-flights-list"
+                                        onClick={() => {
+                                            setTooltip({ visible: false, x: 0, y: 0, text: '' });
+                                            handleAddNewFlight();
+                                        }}
+                                    >
+                                        +
+                                    </button>
+                                    <span style={{ display: 'none' }}>Add New Flight</span>
                                 </div>
-                                <button className="close-button" onClick={() => setShowModal(false)}>✕</button>
+                                <h2 className="flights-modal-title">Flights List</h2>
+                                <button className="close-button-flights-list" onClick={() => setShowModal(false)}>✕</button>
                             </div>
-                            <h2 className="modal-title">Flights List</h2>
+                            {tooltip.visible && createPortal(
+                                <div
+                                    style={{
+                                        position: 'fixed',
+                                        left: tooltip.x,
+                                        top: tooltip.y,
+                                        transform: 'translate(-50%, -100%)',
+                                        zIndex: 3000,
+                                        background: 'white',
+                                        border: '1px solid #ddd',
+                                        borderRadius: '10px',
+                                        padding: '5px 10px',
+                                        whiteSpace: 'nowrap',
+                                        color: 'black'
+                                    }}
+                                >
+                                    {tooltip.text}
+                                </div>, document.body)}
                             <div className="flights-list">
                                 {loading ? (
                                     <div>Loading flights...</div>
@@ -175,21 +220,43 @@ const FlightsListModal = ({ showModal, setShowModal }) => {
                                                     </div>
                                                 </div>
                                                 <div className="flight-actions">
-                                                    <div className="action-icon-tooltip">
+                                                    <div
+                                                        className="action-icon-tooltip"
+                                                        onMouseEnter={(e) => {
+                                                            const rect = e.currentTarget.getBoundingClientRect();
+                                                            setTooltip({
+                                                                visible: true,
+                                                                x: rect.left + rect.width / 2,
+                                                                y: rect.top - 8,
+                                                                text: 'Edit Flight'
+                                                            });
+                                                        }}
+                                                        onMouseLeave={() => setTooltip({ visible: false, x: 0, y: 0, text: '' })}
+                                                    >
                                                         <ModeEditOutlineIcon 
                                                             className="edit-icon"
                                                             onClick={() => handleEditFlight(flight)}
                                                         />
-                                                        <span className="tooltiptext">Edit Flight</span>
                                                     </div>
-                                                    <div className="action-icon-tooltip">
+                                                    <div
+                                                        className="action-icon-tooltip"
+                                                        onMouseEnter={(e) => {
+                                                            const rect = e.currentTarget.getBoundingClientRect();
+                                                            setTooltip({
+                                                                visible: true,
+                                                                x: rect.left + rect.width / 2,
+                                                                y: rect.top - 8,
+                                                                text: 'Delete Flight'
+                                                            });
+                                                        }}
+                                                        onMouseLeave={() => setTooltip({ visible: false, x: 0, y: 0, text: '' })}
+                                                    >
                                                         <img
                                                             src={garbageIcon}
                                                             alt="delete"
                                                             className="delete-icon"
                                                             onClick={() => handleDeleteFlight(flight._id)}
                                                         />
-                                                        <span className="tooltiptext">Delete Flight</span>
                                                     </div>
                                                 </div>
                                             </div>
@@ -202,11 +269,19 @@ const FlightsListModal = ({ showModal, setShowModal }) => {
                         </>
                     ) : (
                         <>
-                            <button 
-                                className="close-button" 
-                                onClick={() => setShowAddModal(false)}
-                            >✕</button>
-                            <h2 className='add-flight-title'>Details for the new flight</h2>
+                            <div className="add-flight-header">
+                                <div></div>
+                                <h2 className='add-flight-title'>Details for the new flight</h2>
+                                <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
+                                    <button 
+                                        className="close-button-flights-list-add-flight" 
+                                        onClick={() => {
+                                            setTooltip({ visible: false, x: 0, y: 0, text: '' });
+                                            setShowAddModal(false);
+                                        }}
+                                    >✕</button>
+                                </div>
+                            </div>
                             <div className="new-flight-form">
                                 <div className="form-group">
                                     <label>Flight Number:</label>

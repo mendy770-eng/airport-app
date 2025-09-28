@@ -339,6 +339,7 @@
     min-height: 300px;
     max-height: 300px;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    overflow: visible; /* allow tooltips to render outside the modal bounds */
 }
 
 .close-button {
@@ -350,6 +351,11 @@
     cursor: pointer;
     font-size: 18px;
     padding: 5px;
+    z-index: 4000; /* ensure close is above any header/tooltip layers */
+}
+
+.close-button:hover {
+    z-index: 4001; /* keep on top even during hover */
 }
 
 .flights-modal {
@@ -426,6 +432,7 @@
 }
 
 .flights-modal h2 {
+    position: relative;
     display: flex;
     text-align: center;
     justify-content: center;
@@ -491,11 +498,8 @@
 .add-flight-title {
     text-align: center;
     margin: 0 0 10px 0;
-    /* הקטנת margin */
-    padding: 10px 0;
-    /* הקטנת padding */
+    padding: 10px 10px;
     font-size: 24px;
-    /* הקטנת גודל פונט */
     color: #333;
     text-transform: uppercase;
     font-weight: bold;
@@ -699,7 +703,3 @@
 .sum-of-products-container span {
     font-weight: bold;  /* אופציונלי - הדגשת הסכום */
 }
-
-
-
-
