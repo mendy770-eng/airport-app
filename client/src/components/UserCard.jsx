@@ -15,7 +15,8 @@ export default function UserCard(props) {
 
     return <Box sx={{ padding: '5px' }}>
         <Stack spacing={1}>
-            <Typography variant='h3' align='center'>Hello {user.firstName}</Typography>
+            <Typography variant='h3' align='center'>Hello {user.firstName} </Typography>
+            <Typography align='center'>The {user.permission}</Typography>
             <Typography variant='subtitle2' align='center'>{user.email}</Typography>
             <Button variant='contained' onClick={handleLogout}>
                 <LogoutIcon />

@@ -4,29 +4,26 @@
 
 .footer {
     z-index: 1000;
-    display: flex;
-    justify-content: space-between;
+    display: grid;
+    grid-template-columns: 1fr auto 1fr; /* left | center (watch) | right */
     align-items: center;
     background-color: var(--primary-color);
     color: white;
     height: 4rem;
     padding: 0 2rem;
     width: 100%;
-    flex-wrap: wrap;
 }
 
 .footer aside {
     display: flex;
     align-items: center;
     gap: 1rem;
+    justify-self: start;
 }
 
 .time-container {
     display: flex;
     align-items: center;
-    position: fixed;
-    right: 625px;
-    bottom: 18px;
     gap: 0.5rem;
     font-size: 1.6rem;
     font-weight: bold;
@@ -51,6 +48,7 @@
     transition: transform 0.3s ease;
     margin-right: 60px;
     cursor: pointer;
+    justify-self: end;
 }
 
 .weather-icon:hover {
@@ -94,5 +92,18 @@
 }
 
 .watch {
-    margin-right: 100px;
+    justify-self: center;
+    text-align: center;
+    width: max-content;
+    margin: 0;
+    font-size: clamp(1rem, 2vw + 0.25rem, 1.6rem);
+}
+
+/* Ensure the Time component is flexible and centered within the footer */
+.footer .time-container {
+    position: static;
+    right: auto;
+    bottom: auto;
+    margin: 0;
+    justify-content: center;
 }
